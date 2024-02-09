@@ -1,6 +1,5 @@
-# team-418
-
-Project Name: HomeBase
+# HausHub
+(formerly HomeBase)
 
 Description: A virtual homeowner’s manual to hold information about consumables for a home that sends email reminders and generates links to purchase items needed. To limit the project we focused on HVAC air filter replacement since it is common to almost all houses but is easily forgotten. The program will take and store air filter size information, issue email reminders at set intervals, and allow user account creation and management.
 
@@ -22,6 +21,6 @@ Spring Boot for back end
 MySQL for database
 SendGrid API for email reminders and Serp API for item link
 
-Members: Austin H., Brittney E., Liam C
+Contributors: Austin H., Brittney E., Liam C.
 
 <img src="./frontend/home-base/src/assets/HomeBaseLanding.png" alt="Home Base Landing" />
