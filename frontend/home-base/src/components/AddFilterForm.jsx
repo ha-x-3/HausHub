@@ -136,7 +136,7 @@ const AddFilterForm = () => {
 
   return (
     <div className="filter-form">
-      <form>
+      <form className="filter-form-inputs">
         <div className="form-group">
           <input
             type="hidden"
@@ -242,9 +242,11 @@ const AddFilterForm = () => {
             <div className="invalid-feedback">{errors.equipment}</div>
           )}
         </div>
-        <button className="btn btn-success" onClick={saveFilter}>
-          Submit
-        </button>
+        <div className="button-container">
+          <button className="button-secondary" onClick={saveFilter}>
+            Submit
+          </button>
+        </div>
       </form>
     </div>
   );

@@ -1,10 +1,7 @@
 import React from 'react';
 import './App.css'
 import Routes from './Routes'
-import NavigationBar from './components/NavigationBar'
 import { AuthProvider } from './components/AuthContext';
-import { BrowserRouter as Router } from 'react-router-dom'; // Import BrowserRouter
-
 
 function App() {
 

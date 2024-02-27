@@ -158,35 +158,35 @@ function FilterChangeCard(){
     const renderDeck = () => {
       return (
         <div>
-          <CardGroup className="custom-card-group">
+          <CardGroup className="card-group">
             {equipmentData.map((item) => (
-              <Card key={item.id} className = "custom-card">
+              <Card key={item.id} className = "card">
                 <Card.Body>
-                  <Card.Title className = "custom-card-title">{item.name}</Card.Title>
+                  <Card.Title className = "card-title">{item.name}</Card.Title>
                   <div>
                     {item.filters.map(filter => (
                       <ListGroup key={filter.id} className="list-group-flush">
                         <div>
-                          <ListGroup.Item className="custom-card-subtitle">Location: {filter.location}</ListGroup.Item>
+                          <ListGroup.Item className="card-subtitle">Location: {filter.location}</ListGroup.Item>
                         </div>
                         
                         <div>
-                          <ListGroup.Item className="custom-listgroup-item">Filter Size: {filter.length} x {filter.width} x {filter.height}</ListGroup.Item>
-                        <ListGroup.Item className="custom-listgroup-item">Date of Last Change: {new Date(filter.dateOfLastChange).toLocaleDateString('en-US').replace(/\//g, '-')}</ListGroup.Item>
-                        <ListGroup.Item className="custom-listgroup-item">Due Date: {new Date(new Date(filter.dateOfLastChange).setDate(new Date(filter.dateOfLastChange).getDate() + item.filterLifeDays)).toLocaleDateString('en-US').replace(/\//g, '-')}</ListGroup.Item>
+                          <ListGroup.Item className="card-listgroup-item">Filter Size: {filter.length} x {filter.width} x {filter.height}</ListGroup.Item>
+                        <ListGroup.Item className="card-listgroup-item">Date of Last Change: {new Date(filter.dateOfLastChange).toLocaleDateString('en-US').replace(/\//g, '-')}</ListGroup.Item>
+                        <ListGroup.Item className="card-listgroup-item">Due Date: {new Date(new Date(filter.dateOfLastChange).setDate(new Date(filter.dateOfLastChange).getDate() + item.filterLifeDays)).toLocaleDateString('en-US').replace(/\//g, '-')}</ListGroup.Item>
                         </div>                        
                       </ListGroup>
                     ))}
                   </div>
-                  <div className='button-container text-center'>
+                  <div className='button-container'>
                   <div className="button-wrapper">
-                    <Button onClick={() => handleClick(item.id)} variant="success">Change Now</Button>
+                    <Button onClick={() => handleClick(item.id)} className="button">Change Now</Button>
                   </div>
                   <div className="button-wrapper">
-                    <Button onClick={() => handleGoogleSearch(item.id)} variant="primary">Find This Filter</Button>
+                    <Button onClick={() => handleGoogleSearch(item.id)} className="button">Google Search</Button>
                   </div>
                   <div className="button-wrapper">
-                    <Button onClick={() => handleSerpApi(formatFilterSize(item.filters[0]))} variant="info">Test API!</Button>
+                    <Button onClick={() => handleSerpApi(formatFilterSize(item.filters[0]))} className="button">API</Button>
                   </div>
                 </div>
                 </Card.Body>

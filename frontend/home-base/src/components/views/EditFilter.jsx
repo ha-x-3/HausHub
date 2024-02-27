@@ -194,8 +194,10 @@ const EditFilter = () => {
                 />
                 {errors.dateOfLastChange && <div className="invalid-feedback">{errors.dateOfLastChange}</div>}
             </div>
-            <button className = "btn btn-success mr-2" onClick={saveFilter}>Submit</button>    
-            <button className="btn btn-secondary" onClick={cancelEdit}>Cancel</button>
+            <div className="button-container">
+                <button className = "button" onClick={saveFilter}>Submit</button>    
+                <button className="button-secondary" onClick={cancelEdit}>Cancel</button>
+            </div>
         </form>
     </div>
   );

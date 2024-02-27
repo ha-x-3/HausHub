@@ -73,14 +73,13 @@ export default function EditEquipmentTable() {
                 <td>{filter.height}</td>
                 <td>{filter.dateOfLastChange}</td>
                 <td>
-                  <Link
-                    className="btn btn-primary btn-sm btn-block"
+                  <Link className="button-secondary"
                     to={`/editFilter/${filter.id}`}
                   >
                     Edit
                   </Link>
                   <button
-                    className="btn btn-danger btn-sm btn-block"
+                    className="button"
                     onClick={() => openDeleteModal(filter.id)}
                   >
                     Delete
