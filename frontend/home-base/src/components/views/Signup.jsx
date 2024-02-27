@@ -117,7 +117,7 @@ export default function Signup() {
                         <input type="password" value={confirmPassword} onChange={handleConfirmPasswordChange} />
                     </label>
                 </div>
-                    <input type="submit" value="Submit" />
+                    <input className='button' type="submit" value="Submit" />
             </form>
         </div>
     );

@@ -101,9 +101,11 @@ const AddEquipmentForm = () => {
             <div className="invalid-feedback">{errors.filterLifeDays}</div>
           )}
         </div>
-        <button className="btn btn-success" onClick={(e) => saveEquipment(e)}>
-          Submit
-        </button>
+        <div className="button-container">
+          <button className="button-secondary" onClick={(e) => saveEquipment(e)}>
+            Submit
+          </button>
+        </div>
       </form>
     </div>
   );

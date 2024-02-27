@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Table, Button, Modal } from "react-bootstrap";
+import { Table, Modal } from "react-bootstrap";
 
 const EquipmentTable = () => {
   const [equipment, setEquipment] = useState([]);
@@ -57,13 +57,12 @@ const EquipmentTable = () => {
               <td>{equipmentItem.name}</td>
               <td>{equipmentItem.filterLifeDays}</td>
               <td>
-                <Button
-                  variant="danger"
-                  size="sm"
+                <button
+                  className="button"
                   onClick={() => openDeleteModal(equipmentItem.id)}
                 >
                   Delete
-                </Button>
+                </button>
               </td>
             </tr>
           ))}
@@ -77,15 +76,15 @@ const EquipmentTable = () => {
           Are you sure you want to delete this equipment?
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={closeDeleteModal}>
+          <button className="button-secondary" onClick={closeDeleteModal}>
             Cancel
-          </Button>
-          <Button
-            variant="danger"
+          </button>
+          <button
+            className="button"
             onClick={() => handleDelete(deleteEquipmentId)}
           >
             Delete
-          </Button>
+          </button>
         </Modal.Footer>
       </Modal>
     </div>

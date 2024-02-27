@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import { Table, Button, Modal } from "react-bootstrap";
+import { Table, Modal } from "react-bootstrap";
 import "./styles/EditEquipmentTableStyles.css";
 import { useNavigate } from 'react-router-dom';
 
@@ -67,13 +67,15 @@ export const UserSettings = () => {
                             <td>{user.username}</td>
                             <td>{user.email}</td>
                             <td>
-                                <Button variant="primary" onClick={() => handleEdit(user.id)}>
-                                    Edit
-                                </Button>
-                                <Button variant="danger" onClick={() => openDeleteModal(user.id)}
-                                >
-                                    Delete
-                                </Button>
+                                <div className='button-container'>
+                                    <button className="button-secondary" onClick={() => handleEdit(user.id)}>
+                                        Edit
+                                    </button>
+                                    <button className="button" onClick={() => openDeleteModal(user.id)}
+                                    >
+                                        Delete
+                                    </button>
+                                </div>
                             </td>
                         </tr>
                     ))}
@@ -86,12 +88,12 @@ export const UserSettings = () => {
                 </Modal.Header>
                 <Modal.Body>Are you sure you want to delete this user?</Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={closeDeleteModal}>
+                    <button className="button" onClick={closeDeleteModal}>
                         Cancel
-                    </Button>
-                    <Button variant="danger" onClick={() => handleDelete(deleteUserId)}>
+                    </button>
+                    <button className="button-secondary" onClick={() => handleDelete(deleteUserId)}>
                         Delete
-                    </Button>
+                    </button>
                 </Modal.Footer>
             </Modal>
         </div>

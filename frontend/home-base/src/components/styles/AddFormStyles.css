@@ -5,9 +5,27 @@
 }
 
 .filter-form {
-    height: auto;
-    width: auto;
-    margin-top: 20px;
+    height: 100%;
+    width: 100%;
+    border: 6px solid var(--primary);
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.466);
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow-x: scroll;
+}
+
+.filter-form-inputs {
+    width: 50%;
+    margin: auto;
+}
+
+.button-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
 }
 
 @media (max-width: 768px) {

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Button, Container, Table, Row, Col, AlertHeading } from "react-bootstrap";
+import { Button, Container, Table, Row } from "react-bootstrap";
 import Alert from 'react-bootstrap/Alert';
 import axios from "axios";
 
@@ -69,7 +69,7 @@ function FilterChangeHistory() {
                 </Alert>
                 <Container>
                 <Row>
-                    <Button onClick={handleClick}>Send Email Notifications</Button>
+                    <button className="button" onClick={handleClick}>Send Email Notifications</button>
                 </Row>    
                 <Row>    
                     <h6>Checks for filters due and sends email</h6>
@@ -84,8 +84,8 @@ function FilterChangeHistory() {
         <div>
             <h2>Filter Change History</h2>
             <Container>
-                <Row>
-                    <Button onClick={handleClick}>Send Email Notifications</Button>
+                <Row className="button-container">
+                    <button className="button" onClick={handleClick}>Send Email Notifications</button>
                 </Row>    
                 <Row>    
                     <h6>Checks for Filters Due and sends email</h6>

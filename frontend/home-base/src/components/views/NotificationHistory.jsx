@@ -15,7 +15,7 @@ export const NotificationHistory = () => {
 
     return (
         <div className='table-pane'>
-            <Table striped bordered hover>
+            <Table striped hover>
                 <thead>
                     <tr>
                         <th>Notification ID</th>
