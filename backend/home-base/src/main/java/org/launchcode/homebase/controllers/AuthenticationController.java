@@ -1,19 +1,23 @@
 package org.launchcode.homebase.controllers;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.launchcode.homebase.data.UserRepository;
 import org.launchcode.homebase.models.User;
+import org.launchcode.homebase.models.dto.JwtResponse;
 import org.launchcode.homebase.models.dto.LoginFormDTO;
 import org.launchcode.homebase.models.dto.RegisterFormDTO;
+import org.launchcode.homebase.service.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:5173/")
@@ -21,63 +25,31 @@ import java.util.Optional;
 public class AuthenticationController {
 
     @Autowired
+    private JwtService jwtService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
     UserRepository userRepository;
 
-    private static final String userSessionKey = "user";
-
-    public User getUserFromSession(HttpSession session) {
-        Integer userId = (Integer) session.getAttribute(userSessionKey);
-        if (userId == null) {
-            return null;
-        }
-        Optional<User> user = userRepository.findById(userId);
-        if (user.isEmpty()) {
-            return null;
-        }
-        return user.get();
-    }
-
-    private static void setUserInSession(HttpSession session, User user) {
-        session.setAttribute(userSessionKey, user.getId());
-    }
-
-    @GetMapping("/user")
-    public ResponseEntity<User> getCurrentUser(HttpSession session) {
-        User user = getUserFromSession(session);
-
-        if (user == null) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
-
-        return new ResponseEntity<>(user, HttpStatus.OK);
-    }
-
     @PostMapping("/register")
-    public ResponseEntity<User> registerUser(@RequestBody @Valid RegisterFormDTO registerFormDTO, Errors errors, HttpServletRequest request) {
+    public ResponseEntity<JwtResponse> registerUser(@RequestBody @Valid RegisterFormDTO registerFormDTO, Errors errors) {
         if (errors.hasErrors()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
 
-        User existingUser = userRepository.findByUsername(registerFormDTO.getUsername());
-
-        if (existingUser != null) {
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        if (userRepository.findByUsername(registerFormDTO.getUsername()) != null) {
+            return new ResponseEntity<>(null, HttpStatus.CONFLICT);
         }
 
-        String password = registerFormDTO.getPassword();
-        String verifyPassword = registerFormDTO.getVerifyPassword();
-
-        if (!password.equals(verifyPassword)) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-
-        User newUser = new User(registerFormDTO.getUsername(), registerFormDTO.getEmail(), registerFormDTO.getPassword());
-        newUser.setUsername(registerFormDTO.getUsername());
+        String encodedPassword = passwordEncoder.encode(registerFormDTO.getPassword());
+        User newUser = new User(registerFormDTO.getUsername(), registerFormDTO.getEmail(), encodedPassword, registerFormDTO.getRole());
         userRepository.save(newUser);
 
-        setUserInSession(request.getSession(), newUser);
-
-        return new ResponseEntity<>(newUser, HttpStatus.CREATED);
+        String token = jwtService.generateToken(newUser);
+        JwtResponse jwtResponse = new JwtResponse(token);
+        return new ResponseEntity<>(jwtResponse, HttpStatus.CREATED);
     }
 
     @GetMapping("/login")
@@ -87,28 +59,32 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<User> processLoginForm(@RequestBody @Valid LoginFormDTO loginFormDTO, Errors errors, HttpServletRequest request) {
+    public ResponseEntity<?> login(@RequestBody @Valid LoginFormDTO loginFormDTO, Errors errors) {
         if (errors.hasErrors()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Invalid login data", HttpStatus.BAD_REQUEST);
         }
 
-        User theUser = userRepository.findByEmail(loginFormDTO.getEmail());
-
-        if (theUser == null || !theUser.isMatchingPassword(loginFormDTO.getPassword())) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        User user = userRepository.findByEmail(loginFormDTO.getEmail());
+        if (user == null || !passwordEncoder.matches(loginFormDTO.getPassword(), user.getPassword())) {
+            return new ResponseEntity<>("Invalid email or password", HttpStatus.UNAUTHORIZED);
         }
 
-        setUserInSession(request.getSession(), theUser);
-
-        System.out.println("User authenticated: " + theUser.getUsername());
-
-        return new ResponseEntity<>(theUser, HttpStatus.OK);
+        String token = jwtService.generateToken(user);
+//        HttpHeaders responseHeaders = new HttpHeaders();
+//        responseHeaders.set("Authorization", "Bearer " + token);
+        return ResponseEntity.ok(new JwtResponse(token));
     }
 
-    @GetMapping("/logout")
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/logout")
     public ResponseEntity<String> logout(HttpServletRequest request) {
-        request.getSession().invalidate();
-        return new ResponseEntity<>("Logout successful", HttpStatus.OK);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            SecurityContextHolder.clearContext();
+            return new ResponseEntity<>("Logged out successfully", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Forbidden: Not authenticated", HttpStatus.FORBIDDEN);
+        }
     }
 
 }

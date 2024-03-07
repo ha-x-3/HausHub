@@ -3,6 +3,10 @@ package org.launchcode.homebase.models.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import org.launchcode.homebase.models.enums.Role;
+import org.springframework.security.core.GrantedAuthority;
+
+import java.util.Collection;
 
 public class RegisterFormDTO extends LoginFormDTO {
 
@@ -12,6 +16,8 @@ public class RegisterFormDTO extends LoginFormDTO {
     private String username;
 
     private String verifyPassword;
+
+    private Role role;
 
     public String getUsername() {
         return username;
@@ -27,6 +33,14 @@ public class RegisterFormDTO extends LoginFormDTO {
 
     public void setVerifyPassword(String verifyPassword) {
         this.verifyPassword = verifyPassword;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }
 

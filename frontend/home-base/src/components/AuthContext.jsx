@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
+import axios from 'axios';
 
 const AuthContext = createContext();
 
@@ -6,21 +7,59 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    // Check if there is a user in local storage on component mount
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
+    const token = localStorage.getItem('user');
+    if (token) {
+      const decodedToken = decodeToken(token);
+      setUser(decodedToken);
     }
   }, []);
 
-  const login = (userData) => {
-    setUser(userData);
-    localStorage.setItem('user', JSON.stringify(userData));
+  const login = async (userData) => {
+    try {
+      const response = await axios.post('http://localhost:8080/api/login', userData, {
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        withCredentials: true
+      });
+      
+      if (response.data.accessToken) {
+        const token = response.data.accessToken;
+        const decodedToken = decodeToken(token);
+        setUser(decodedToken);
+        localStorage.setItem('user', token);
+      } else {
+        console.error('Invalid response format');
+      }
+    } catch (error) {
+      console.error('Error logging in:', error);
+      throw error;
+    }
   };
 
-  const logout = () => {
-    localStorage.removeItem('user');
-    setUser(null);
+  const logout = async () => {
+    try {
+      await axios.post('http://localhost:8080/api/logout');
+      localStorage.removeItem('user');
+      setUser(null);
+      return true;
+    } catch (error) {
+      console.error('Error logging out:', error);
+      return false;
+    }
+  };
+
+  const decodeToken = (token) => {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(
+      atob(base64)
+        .split('')
+        .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+        .join('')
+    );
+
+    return JSON.parse(jsonPayload);
   };
 
   const isAuthenticated = () => {
