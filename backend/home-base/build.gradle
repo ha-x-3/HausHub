@@ -31,7 +31,7 @@ dependencies {
 	implementation 'com.sendgrid:sendgrid-java:4.10.1'
 	implementation 'com.github.serpapi:google-search-results-java:2.0.2'
 	implementation 'com.fasterxml.jackson.core:jackson-databind:2.16.1'
-
+	compileOnly 'org.projectlombok:lombok:1.18.30'
 }
 
 

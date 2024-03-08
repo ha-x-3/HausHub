@@ -6,15 +6,10 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.launchcode.homebase.models.enums.Role;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static org.apache.catalina.realm.UserDatabaseRealm.getRoles;
 
 @Entity
 public class User extends AbstractEntity implements UserDetails {
@@ -89,7 +84,6 @@ public class User extends AbstractEntity implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Role userRole = getRole();
-
         return Collections.singletonList(userRole);
     }
 

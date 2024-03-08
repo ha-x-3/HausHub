@@ -10,11 +10,8 @@ import EditFilter from './components/views/EditFilter';
 import NotificationHistory from './components/views/NotificationHistory';
 import FilterChangeHistory from './components/views/FilterChangeHistory';
 import EditUser from './components/views/EditUser';
-import { useAuth } from './components/AuthContext';
 
-const Routing = () => {
-
-  const { isAuthenticated } = useAuth();
+const Routing = ({ isAuthenticated }) => {
 
   return (
     <Router>
@@ -23,7 +20,7 @@ const Routing = () => {
         <Route path="/" element={<Landing />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
-        {isAuthenticated() ? (
+        {isAuthenticated ? (
           <>
             <Route path="/edit" element={<Edit />} />
             <Route path="/filter-change" element={<FilterChangeCard />} />

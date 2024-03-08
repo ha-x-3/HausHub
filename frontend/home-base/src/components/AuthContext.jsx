@@ -4,12 +4,13 @@ import axios from 'axios';
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState('');
 
   useEffect(() => {
     const token = localStorage.getItem('user');
     if (token) {
       setUser(token);
+      console.log(token);
     }
   }, []);
 
@@ -38,28 +39,25 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     try {
       const token = localStorage.getItem('user');
-      if (!token) {
-        // Handle case where token is not found
-        console.error('User token not found in localStorage');
-        return false;
-      }
-  
-      const response = await axios.post('http://localhost:8080/api/logout', null, {
-        headers: {
-          Authorization: `Bearer ${token}`
+      const response = await axios.post(
+        'http://localhost:8080/api/logout',
+        null,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
-      });
+      );
       localStorage.removeItem('user');
       setUser(null);
-      return true;
+      console.log('Logout successful');
     } catch (error) {
       console.error('Error logging out:', error);
-      return false;
     }
   };
 
   const isAuthenticated = () => {
-    return !!user;
+    return !!localStorage.getItem('user');
   };
 
   return (

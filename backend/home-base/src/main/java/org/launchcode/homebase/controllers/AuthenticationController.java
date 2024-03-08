@@ -9,11 +9,8 @@ import org.launchcode.homebase.models.dto.LoginFormDTO;
 import org.launchcode.homebase.models.dto.RegisterFormDTO;
 import org.launchcode.homebase.service.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.Errors;
@@ -54,7 +51,6 @@ public class AuthenticationController {
 
     @GetMapping("/login")
     public ResponseEntity<String> displayLoginForm() {
-        // You can modify this as needed, maybe return a URL or a message
         return new ResponseEntity<>("Please log in", HttpStatus.OK);
     }
 
@@ -70,16 +66,13 @@ public class AuthenticationController {
         }
 
         String token = jwtService.generateToken(user);
-//        HttpHeaders responseHeaders = new HttpHeaders();
-//        responseHeaders.set("Authorization", "Bearer " + token);
         return ResponseEntity.ok(new JwtResponse(token));
     }
 
-    @PostMapping("/logout")
-    public ResponseEntity<String> logout(HttpServletRequest request) {
-        // No need to check authentication separately if using @PreAuthorize
-        SecurityContextHolder.clearContext();
-        return ResponseEntity.ok("Logged out successfully");
-    }
+//    @PostMapping("/logout")
+//    public ResponseEntity<String> logout(HttpServletRequest request) {
+//        SecurityContextHolder.clearContext();
+//        return ResponseEntity.ok("Logged out successfully");
+//    }
 
 }
