@@ -15,6 +15,7 @@ const NavigationBar = () => {
     try {
       await axios.get('http://localhost:8080/api/logout');
       logout();
+      localStorage.removeItem('user'); // Remove the token from local storage
       navigate('/login');
     } catch (error) {
       console.error("Error during logout:", error.response?.data?.message || "An unexpected error occurred");

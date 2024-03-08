@@ -205,4 +205,4 @@ function FilterChangeCard(){
     );
 }
 
-export default FilterChangeCard
+export default FilterChangeCard;

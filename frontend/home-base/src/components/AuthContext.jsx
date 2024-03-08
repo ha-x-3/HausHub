@@ -9,8 +9,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const token = localStorage.getItem('user');
     if (token) {
-      const decodedToken = decodeToken(token);
-      setUser(decodedToken);
+      setUser(token);
     }
   }, []);
 
@@ -25,8 +24,7 @@ export const AuthProvider = ({ children }) => {
       
       if (response.data.accessToken) {
         const token = response.data.accessToken;
-        const decodedToken = decodeToken(token);
-        setUser(decodedToken);
+        setUser(token);
         localStorage.setItem('user', token);
       } else {
         console.error('Invalid response format');
@@ -39,7 +37,18 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      await axios.post('http://localhost:8080/api/logout');
+      const token = localStorage.getItem('user');
+      if (!token) {
+        // Handle case where token is not found
+        console.error('User token not found in localStorage');
+        return false;
+      }
+  
+      const response = await axios.post('http://localhost:8080/api/logout', null, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
       localStorage.removeItem('user');
       setUser(null);
       return true;
@@ -47,19 +56,6 @@ export const AuthProvider = ({ children }) => {
       console.error('Error logging out:', error);
       return false;
     }
-  };
-
-  const decodeToken = (token) => {
-    const base64Url = token.split('.')[1];
-    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    const jsonPayload = decodeURIComponent(
-      atob(base64)
-        .split('')
-        .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
-        .join('')
-    );
-
-    return JSON.parse(jsonPayload);
   };
 
   const isAuthenticated = () => {

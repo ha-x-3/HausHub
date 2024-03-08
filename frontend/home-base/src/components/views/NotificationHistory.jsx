@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Table } from 'react-bootstrap';
 import '../styles/NotificationHistoryStyles.css';
 
-export const NotificationHistory = () => {
+const NotificationHistory = () => {
 
     const [emailNotifications, setEmailNotifications] = useState([]);
 
@@ -41,4 +41,6 @@ export const NotificationHistory = () => {
             </Table>
         </div>
     )
-}
+};
+
+export default NotificationHistory;

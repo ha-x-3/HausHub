@@ -75,16 +75,11 @@ public class AuthenticationController {
         return ResponseEntity.ok(new JwtResponse(token));
     }
 
-    @PreAuthorize("isAuthenticated()")
     @PostMapping("/logout")
     public ResponseEntity<String> logout(HttpServletRequest request) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.isAuthenticated()) {
-            SecurityContextHolder.clearContext();
-            return new ResponseEntity<>("Logged out successfully", HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("Forbidden: Not authenticated", HttpStatus.FORBIDDEN);
-        }
+        // No need to check authentication separately if using @PreAuthorize
+        SecurityContextHolder.clearContext();
+        return ResponseEntity.ok("Logged out successfully");
     }
 
 }

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { useAuth } from '../AuthContext';
 
 export default function Login() {
@@ -18,8 +17,7 @@ export default function Login() {
           } catch (error) {
             console.error('Error has occurred', error);
             alert('An error has occurred while logging in.');
-          }
-        
+          } 
     };
 
     return (
