@@ -19,7 +19,13 @@ export const UserSettings = () => {
 
     const loadUsers = async () => {
         try {
-            const response = await axios.get('http://localhost:8080/api/users');
+            const token = localStorage.getItem('user');
+            const response = await axios.get('http://localhost:8080/api/users',
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            });
             setUsers(response.data);
         } catch (error) {
             console.error('Error loading users:', error);
@@ -32,7 +38,13 @@ export const UserSettings = () => {
 
     const handleDelete = async (userId) => {
         try {
-            await axios.delete(`http://localhost:8080/api/users/${userId}`);
+            const token = localStorage.getItem('user');
+            await axios.delete(`http://localhost:8080/api/users/${userId}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            });
             loadUsers();
             setShowDeleteModal(false)
         } catch (error) {

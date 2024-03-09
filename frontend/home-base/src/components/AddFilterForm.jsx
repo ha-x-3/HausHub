@@ -25,9 +25,15 @@ const AddFilterForm = () => {
 
   const loadEquipment = async () => {
         try {
-            const result = await axios.get("http://localhost:8080/api/equipment");
-            //console.log(result.data);
-            setEquipment(result.data);
+          const token = localStorage.getItem('user');
+          const result = await axios.get("http://localhost:8080/api/equipment",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          //console.log(result.data);
+          setEquipment(result.data);
         } catch (error) {
             console.error('Error loading equipment:', error);
         }
@@ -121,9 +127,15 @@ const AddFilterForm = () => {
     event.preventDefault();
     if (validateForm()) {
       try {
+        const token = localStorage.getItem('user');
         const response = await axios.post(
           `http://localhost:8080/api/equipment/${selectedEquipmentId}/filters`,
-          filter
+          filter,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
         //console.log(response.data);
         navigate(0);

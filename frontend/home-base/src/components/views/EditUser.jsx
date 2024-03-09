@@ -19,7 +19,13 @@ export default function EditUser() {
 
   const loadUser = async () => {
     try {
-      const result = await axios.get(`http://localhost:8080/api/users/${id}`);
+      const token = localStorage.getItem('user');
+      const result = await axios.get(`http://localhost:8080/api/users/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       const userData = result.data;
   
       // Ensure that password and confirmPassword fields are not null or undefined
@@ -108,8 +114,13 @@ export default function EditUser() {
           payload.password = user.password;
           payload.confirmPassword = user.confirmPassword;
         }
-  
-        const response = await axios.put(`http://localhost:8080/api/users/${id}`, payload);
+        const token = localStorage.getItem('user');
+        const response = await axios.put(`http://localhost:8080/api/users/${id}`, payload,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         //console.log(response.data);
         navigate('/edit');
       } catch (error) {

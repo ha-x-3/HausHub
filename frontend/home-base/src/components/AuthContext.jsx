@@ -6,6 +6,7 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthCheckComplete, setIsAuthCheckComplete] = useState(false);
 
   useEffect(() => {
     checkAuthentication();
@@ -18,23 +19,30 @@ export const AuthProvider = ({ children }) => {
       try {
         const decodedToken = decodeJWT(token);
         if (decodedToken) {
-          const { username } = decodedToken; // Destructure the username from the decoded token
-          setIsAuthenticated(true);
+          const { username } = decodedToken;
           setUser(username);
+          setIsAuthenticated(true);
+          console.log("isAuthenticated true");
         } else {
-          setIsAuthenticated(false);
           setUser(null);
+          setIsAuthenticated(false);
+          console.log("isAuthenticated false 1");
         }
       } catch (error) {
         console.error('Error verifying token:', error);
-        setIsAuthenticated(false);
         setUser(null);
+        setIsAuthenticated(false);
+        console.log("isAuthenticated false 2");
       }
     } else {
       console.log("User not authenticated");
-      setIsAuthenticated(false);
       setUser(null);
+      setIsAuthenticated(false);
+      console.log("isAuthenticated false 3");
     }
+
+    setIsAuthCheckComplete(true);
+    console.log("isAuthCheckComplete is true");
   };
 
   const login = async (userData) => {
@@ -73,7 +81,7 @@ export const AuthProvider = ({ children }) => {
       );
       localStorage.removeItem('user');
       setUser(null);
-      setIsAuthenticated(false);
+      setIsAuthCheckComplete(false);
       console.log('Logout successful');
     } catch (error) {
       console.error('Error logging out:', error);
@@ -85,9 +93,9 @@ export const AuthProvider = ({ children }) => {
       const base64Url = token.split('.')[1];
       const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
       const decodedData = JSON.parse(atob(base64));
-      console.log('Decoded Token Payload:', decodedData);
-      const username = decodedData.sub; // Extract the username from the "sub" property
-      return { username }; // Return an object with the username property
+      //console.log('Decoded Token Payload:', decodedData);
+      const username = decodedData.sub;
+      return { username };
     } catch (error) {
       console.error('Error decoding token:', error);
       return null;
@@ -95,7 +103,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, isAuthenticated }}>
+    <AuthContext.Provider value={{ user, login, logout, isAuthenticated, isAuthCheckComplete }}>
       {children}
     </AuthContext.Provider>
   );

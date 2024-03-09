@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import NavigationBar from './components/NavigationBar';
 import Landing from './components/views/Landing';
@@ -10,8 +10,14 @@ import EditFilter from './components/views/EditFilter';
 import NotificationHistory from './components/views/NotificationHistory';
 import FilterChangeHistory from './components/views/FilterChangeHistory';
 import EditUser from './components/views/EditUser';
+import { useAuth } from './components/AuthContext';
 
-const Routing = ({ isAuthenticated }) => {
+
+const Routing = () => {
+
+  const { isAuthenticated, isAuthCheckComplete } = useAuth();
+
+  console.log("Is authenticated and auth check complete:", isAuthenticated && isAuthCheckComplete);
 
   return (
     <Router>
@@ -20,7 +26,7 @@ const Routing = ({ isAuthenticated }) => {
         <Route path="/" element={<Landing />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
-        {isAuthenticated ? (
+        {isAuthenticated && isAuthCheckComplete ? (
           <>
             <Route path="/edit" element={<Edit />} />
             <Route path="/filter-change" element={<FilterChangeCard />} />
@@ -30,7 +36,8 @@ const Routing = ({ isAuthenticated }) => {
             <Route path="/edit-user/:id" element={<EditUser />} />
           </>
         ) : (
-          <Route path="*" element={<Navigate to="/login" replace />} />
+          // Redirect to login page if not authenticated
+          <Route path="*" element={<Navigate to="/login" />} />
         )}
       </Routes>
     </Router>
