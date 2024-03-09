@@ -1,24 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import './App.css'
-import Routes from './Routes'
+import React from 'react';
+import './App.css';
+import Routes from './Routes';
 import { AuthProvider } from './components/AuthContext';
+import useAuthContext from './components/hooks/useAuthContext';
 
 function App() {
+  const isAuthenticated = useAuthContext();
 
-  const [user, setUser] = useState(null);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  useEffect(() => {
-    const token = localStorage.getItem('user');
-    if (token) {
-      setUser(token);
-      setIsAuthenticated(true);
-      console.log(token);
-    } else {
-      setIsAuthenticated(false);
-    }
-  }, []);
-  
   return (
     <AuthProvider>
       <div className='App'>

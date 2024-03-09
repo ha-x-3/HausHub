@@ -103,31 +103,31 @@ export default function Signup() {
                 <div className="formInfo">
                     <label>
                         Username:
-                        <input type="text" value={name} onChange={handleNameChange} />
+                        <input type="text" value={name} autoComplete='username' onChange={handleNameChange} />
                     </label>
                 </div>
                 <div className="formInfo">
                     <label>
                         Email:
-                        <input type="email"  value={email} onChange={handleEmailChange}/>
+                        <input type="email"  value={email} autoComplete='email' onChange={handleEmailChange}/>
                     </label>
                 </div>
                 <div className="formInfo">
                     <label>
                         Password:
-                        <input type="password" value={password} onChange={handlePasswordChange} />
+                        <input type="password" value={password} autoComplete='new-password' onChange={handlePasswordChange} />
                     </label>
                 </div>
                  <div className="formInfo">
                     <label>
                         Confirm Password:
-                        <input type="password" value={confirmPassword} onChange={handleConfirmPasswordChange} />
+                        <input type="password" value={confirmPassword} autoComplete='new-password' onChange={handleConfirmPasswordChange} />
                     </label>
                 </div>
                 <div className="formInfo">
                     <label>
                         Role:
-                        <select value={role} onChange={handleRoleChange}>
+                        <select value={role} autoComplete='role' onChange={handleRoleChange}>
                             <option value="">Select Role</option>
                             <option value="ADMIN">Admin</option>
                             <option value="USER">User</option>

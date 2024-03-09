@@ -4,15 +4,38 @@ import axios from 'axios';
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState('');
+  const [user, setUser] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem('user');
-    if (token) {
-      setUser(token);
-      console.log(token);
-    }
+    checkAuthentication();
   }, []);
+
+  const checkAuthentication = async () => {
+    const token = localStorage.getItem('user');
+  
+    if (token) {
+      try {
+        const decodedToken = decodeJWT(token);
+        if (decodedToken) {
+          const { username } = decodedToken; // Destructure the username from the decoded token
+          setIsAuthenticated(true);
+          setUser(username);
+        } else {
+          setIsAuthenticated(false);
+          setUser(null);
+        }
+      } catch (error) {
+        console.error('Error verifying token:', error);
+        setIsAuthenticated(false);
+        setUser(null);
+      }
+    } else {
+      console.log("User not authenticated");
+      setIsAuthenticated(false);
+      setUser(null);
+    }
+  };
 
   const login = async (userData) => {
     try {
@@ -22,11 +45,11 @@ export const AuthProvider = ({ children }) => {
         },
         withCredentials: true
       });
-      
+
       if (response.data.accessToken) {
         const token = response.data.accessToken;
-        setUser(token);
         localStorage.setItem('user', token);
+        checkAuthentication();
       } else {
         console.error('Invalid response format');
       }
@@ -39,7 +62,7 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     try {
       const token = localStorage.getItem('user');
-      const response = await axios.post(
+      await axios.post(
         'http://localhost:8080/api/logout',
         null,
         {
@@ -50,14 +73,25 @@ export const AuthProvider = ({ children }) => {
       );
       localStorage.removeItem('user');
       setUser(null);
+      setIsAuthenticated(false);
       console.log('Logout successful');
     } catch (error) {
       console.error('Error logging out:', error);
     }
   };
 
-  const isAuthenticated = () => {
-    return !!localStorage.getItem('user');
+  const decodeJWT = (token) => {
+    try {
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const decodedData = JSON.parse(atob(base64));
+      console.log('Decoded Token Payload:', decodedData);
+      const username = decodedData.sub; // Extract the username from the "sub" property
+      return { username }; // Return an object with the username property
+    } catch (error) {
+      console.error('Error decoding token:', error);
+      return null;
+    }
   };
 
   return (
@@ -70,3 +104,5 @@ export const AuthProvider = ({ children }) => {
 export const useAuth = () => {
   return useContext(AuthContext);
 };
+
+export { AuthContext };

@@ -26,13 +26,13 @@ export default function Login() {
                 <div className="formInfo">
                     <label>
                         Email:
-                        <input type="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)}/>
+                        <input type="email" name="email" value={email} autoComplete="email" onChange={(e) => setEmail(e.target.value)}/>
                     </label>
                 </div>
                 <div className="formInfo">
                     <label>
                         Password:
-                        <input type="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                        <input type="password" name="password" value={password} autoComplete="password" onChange={(e) => setPassword(e.target.value)} />
                     </label>
                 </div>
                     <input className="button" type="submit" value="Submit" />

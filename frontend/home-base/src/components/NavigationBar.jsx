@@ -1,14 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import HausWrangler from '../assets/HausWrangler.svg';
 import '../components/styles/NavigationBarStyle.css';
 import { useAuth } from './AuthContext';
 
-
 const NavigationBar = () => {
 
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Fetch user information whenever it changes
+  }, [user]);
 
   const handleLogout = async () => {
     try {
@@ -52,7 +55,7 @@ const NavigationBar = () => {
          <div className="nav-user">
           {user ? (
             <>
-              <span className="nav-item nav-link">Welcome, {user.username}</span>
+              <span className="nav-item nav-link">Welcome, {user}</span>
               <button onClick={handleLogout}>
                 Logout
               </button>
