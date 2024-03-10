@@ -12,7 +12,6 @@ export const AuthProvider = ({ children }) => {
 
   const checkAuthentication = async () => {
     const token = localStorage.getItem('user');
-
     if (token) {
       try {
         const decodedToken = decodeJWT(token);
@@ -53,7 +52,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const logout = async () => {
+  const logout = async (callback) => {
     try {
       const token = localStorage.getItem('user');
       await axios.post(
@@ -67,6 +66,7 @@ export const AuthProvider = ({ children }) => {
       );
       localStorage.removeItem('user');
       setUser(null);
+      callback();
     } catch (error) {
       console.error('Error logging out:', error);
     }
@@ -86,7 +86,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, checkAuthentication }}>
       {children}
     </AuthContext.Provider>
   );

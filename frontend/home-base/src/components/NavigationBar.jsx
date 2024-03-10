@@ -5,14 +5,17 @@ import '../components/styles/NavigationBarStyle.css';
 import { useAuth } from './AuthContext';
 
 const NavigationBar = () => {
-  const { user, logout } = useAuth();
+  const { user, logout, checkAuthentication } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    checkAuthentication();
+  }, [checkAuthentication]);
 
   const handleLogout = async () => {
     try {
-      await logout();
+      await logout(() => navigate('/login'));
       localStorage.removeItem('user');
-      navigate('/login');
     } catch (error) {
       console.error("Error during logout:", error.response?.data?.message || "An unexpected error occurred");
     }
