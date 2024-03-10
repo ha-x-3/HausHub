@@ -15,7 +15,13 @@ export default function EditEquipmentTable() {
 
   const loadEquipment = async () => {
     try {
-      const result = await axios.get("http://localhost:8080/api/equipment");
+      const token = localStorage.getItem('user');
+      const result = await axios.get("http://localhost:8080/api/equipment",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setEquipment(result.data);
     } catch (error) {
       console.error("Error loading equipment:", error);
@@ -24,7 +30,13 @@ export default function EditEquipmentTable() {
 
   const handleDelete = async (filterId) => {
     try {
-      await axios.delete(`http://localhost:8080/api/filters/${filterId}`);
+      const token = localStorage.getItem('user');
+      await axios.delete(`http://localhost:8080/api/filters/${filterId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       loadEquipment();
       setShowDeleteModal(false);
     } catch (error) {

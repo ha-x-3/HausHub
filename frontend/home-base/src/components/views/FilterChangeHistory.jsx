@@ -17,14 +17,20 @@ function FilterChangeHistory() {
 
       const loadHistory = async () => {
         try {
-          const response = await axios.get("http://localhost:8080/api/filter-history");
-          console.log(response.data);
-          setFilterChangeHistory(response.data);
-          setLoading(false);
-        } catch (error) {
-          setError(error);
-          setLoading(false);
-        }
+            const token = localStorage.getItem('user');
+            const response = await axios.get("http://localhost:8080/api/filter-history",
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            });
+            console.log(response.data);
+            setFilterChangeHistory(response.data);
+            setLoading(false);
+            } catch (error) {
+            setError(error);
+            setLoading(false);
+            }
       };  
 
     if(loading) {
@@ -37,7 +43,13 @@ function FilterChangeHistory() {
 
     const handleClick = async () => {
         try {
-            const response = await axios.post("http://localhost:8080/api/filter-history/email");
+            const token = localStorage.getItem('user');
+            const response = await axios.post("http://localhost:8080/api/filter-history/email",
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            });
             console.log(response.data);
         } catch (error) {
             console.error("Failed to send emails: ", error);

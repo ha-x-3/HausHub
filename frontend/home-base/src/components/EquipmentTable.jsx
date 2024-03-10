@@ -13,7 +13,13 @@ const EquipmentTable = () => {
 
   const loadEquipment = async () => {
     try {
-      const result = await axios.get("http://localhost:8080/api/equipment");
+      const token = localStorage.getItem('user');
+      const result = await axios.get("http://localhost:8080/api/equipment",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setEquipment(result.data);
     } catch (error) {
       console.error("Error loading equipment:", error);
@@ -22,7 +28,13 @@ const EquipmentTable = () => {
 
   const handleDelete = async (equipmentId) => {
     try {
-      await axios.delete(`http://localhost:8080/api/equipment/${equipmentId}`);
+      const token = localStorage.getItem('user');
+      await axios.delete(`http://localhost:8080/api/equipment/${equipmentId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       loadEquipment();
       setShowDeleteModal(false);
     } catch (error) {

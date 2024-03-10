@@ -26,7 +26,7 @@ public class UserController {
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
         List<User> users = userRepository.findAll();
-        return  ResponseEntity.ok(users);
+        return ResponseEntity.ok(users);
     }
 
     @GetMapping("/{id}")
@@ -57,7 +57,7 @@ public class UserController {
         // Check if the password is not empty in the updatedUser
         if (!updatedUser.isPasswordEmpty()) {
             // Update the password only if it's not empty
-            userToUpdate.setPassword(User.getEncoder().encode(updatedUser.getPassword()));
+            userToUpdate.setPassword(updatedUser.getPassword());
         }
 
         userRepository.save(userToUpdate);

@@ -1,20 +1,17 @@
 import React from 'react';
-import './App.css'
-import Routes from './Routes'
+import './App.css';
+import Routing from './Routes';
 import { AuthProvider } from './components/AuthContext';
 
 function App() {
 
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
-  //need to add a log-in state for the navigation bar (to ignore landing, signup, and login page)
-  
   return (
     <AuthProvider>
-    <div className='App'>
-      <Routes />
-    </div>
+      <div className='App'>
+        <Routing />
+      </div>
     </AuthProvider>
-  )
+  );
 }
 
-export default App
+export default App;

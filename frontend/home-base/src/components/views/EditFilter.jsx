@@ -21,8 +21,13 @@ const EditFilter = () => {
 
     const loadFilter = async () => {
         try {
-            const result = await axios.get(`http://localhost:8080/api/filters/${id}`);
-            //console.log(result.data);
+            const token = localStorage.getItem('user');
+            const result = await axios.get(`http://localhost:8080/api/filters/${id}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            });
             setFilter(result.data);
         } catch (error) {
             console.error('Error loading filter:', error);
@@ -104,7 +109,7 @@ const EditFilter = () => {
             const { id, location, length, width, height, dateOfLastChange } = filter;
       
             const formattedDate = new Date(dateOfLastChange).toISOString().split('T')[0];
-      
+            const token = localStorage.getItem('user');
             const response = await axios.put(
               `http://localhost:8080/api/filters/${id}`,
               {
@@ -114,6 +119,11 @@ const EditFilter = () => {
                 width,
                 height,
                 dateOfLastChange: formattedDate,
+              },
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
               }
             );
 
