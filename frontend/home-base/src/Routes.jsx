@@ -15,9 +15,7 @@ import { useAuth } from './components/AuthContext';
 
 const Routing = () => {
 
-  const { isAuthenticated, isAuthCheckComplete } = useAuth();
-
-  console.log("Is authenticated and auth check complete:", isAuthenticated && isAuthCheckComplete);
+  const { user } = useAuth();
 
   return (
     <Router>
@@ -26,7 +24,7 @@ const Routing = () => {
         <Route path="/" element={<Landing />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
-        {isAuthenticated && isAuthCheckComplete ? (
+        {user ? (
           <>
             <Route path="/edit" element={<Edit />} />
             <Route path="/filter-change" element={<FilterChangeCard />} />
@@ -36,8 +34,7 @@ const Routing = () => {
             <Route path="/edit-user/:id" element={<EditUser />} />
           </>
         ) : (
-          // Redirect to login page if not authenticated
-          <Route path="*" element={<Navigate to="/login" />} />
+          <Route path="/login" element={<Login />} />
         )}
       </Routes>
     </Router>

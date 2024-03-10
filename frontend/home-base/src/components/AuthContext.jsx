@@ -5,8 +5,6 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isAuthCheckComplete, setIsAuthCheckComplete] = useState(false);
 
   useEffect(() => {
     checkAuthentication();
@@ -14,35 +12,23 @@ export const AuthProvider = ({ children }) => {
 
   const checkAuthentication = async () => {
     const token = localStorage.getItem('user');
-  
+
     if (token) {
       try {
         const decodedToken = decodeJWT(token);
         if (decodedToken) {
           const { username } = decodedToken;
           setUser(username);
-          setIsAuthenticated(true);
-          console.log("isAuthenticated true");
         } else {
           setUser(null);
-          setIsAuthenticated(false);
-          console.log("isAuthenticated false 1");
         }
       } catch (error) {
         console.error('Error verifying token:', error);
         setUser(null);
-        setIsAuthenticated(false);
-        console.log("isAuthenticated false 2");
       }
     } else {
-      console.log("User not authenticated");
       setUser(null);
-      setIsAuthenticated(false);
-      console.log("isAuthenticated false 3");
     }
-
-    setIsAuthCheckComplete(true);
-    console.log("isAuthCheckComplete is true");
   };
 
   const login = async (userData) => {
@@ -81,8 +67,6 @@ export const AuthProvider = ({ children }) => {
       );
       localStorage.removeItem('user');
       setUser(null);
-      setIsAuthCheckComplete(false);
-      console.log('Logout successful');
     } catch (error) {
       console.error('Error logging out:', error);
     }
@@ -93,7 +77,6 @@ export const AuthProvider = ({ children }) => {
       const base64Url = token.split('.')[1];
       const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
       const decodedData = JSON.parse(atob(base64));
-      //console.log('Decoded Token Payload:', decodedData);
       const username = decodedData.sub;
       return { username };
     } catch (error) {
@@ -103,7 +86,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, isAuthenticated, isAuthCheckComplete }}>
+    <AuthContext.Provider value={{ user, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

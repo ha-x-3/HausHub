@@ -21,7 +21,13 @@ function FilterChangeCard(){
   
     const loadEquipment = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/equipment");
+        const token = localStorage.getItem('user');
+        const response = await axios.get("http://localhost:8080/api/equipment",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         console.log(response.data);
         setEquipmentData(response.data);
         setLoading(false);
@@ -33,9 +39,11 @@ function FilterChangeCard(){
 
     const handleUpdate = async (equipmentId, updatedData) => {
       try {
+        const token = localStorage.getItem('user');
         await axios.put(`http://localhost:8080/api/equipment/${equipmentId}`, updatedData, {
           headers: {
             'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
           },
         });
       } catch (error) {
@@ -45,10 +53,16 @@ function FilterChangeCard(){
   
   const handleGoogleSearch = async (equipmentId) => {
     try {
-        const response = await axios.get(`http://localhost:8080/api/equipment/${equipmentId}/google-search-link`);
-        window.open(response.data, '_blank');
+      const token = localStorage.getItem('user');
+      const response = await axios.get(`http://localhost:8080/api/equipment/${equipmentId}/google-search-link`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      window.open(response.data, '_blank');
     } catch (error) {
-        console.error('Error triggering Google search:', error);
+      console.error('Error triggering Google search:', error);
     }
   };
 
@@ -58,7 +72,13 @@ function FilterChangeCard(){
 
   const handleSerpApi = async (formatFilterSize) => {
     try {
-      const response = await axios.get(`http://localhost:8080/search?filterSize=${formatFilterSize}`, { timeout: 5000 });
+      const token = localStorage.getItem('user');
+      const response = await axios.get(`http://localhost:8080/search?filterSize=${formatFilterSize}`, { timeout: 5000 },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       console.log('SerpApi response:', response.data);
       window.open(response.data, '_blank');
     } catch (error) {
@@ -87,7 +107,13 @@ function FilterChangeCard(){
       // Step 1: Delete all existing filters
       for (const filter of selectedEquipment.filters) {
         filterLocations.push(filter.location);
-        await axios.delete(`http://localhost:8080/api/filters/${filter.id}`);
+        const token = localStorage.getItem('user');
+        await axios.delete(`http://localhost:8080/api/filters/${filter.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
       }
       
       // Step 2: Create new filters with updated dimensions and dateOfLastChange
@@ -116,16 +142,20 @@ function FilterChangeCard(){
         equipmentName: selectedEquipment.name,
         changedTimeStamp: new Date().toISOString().split("T")[0], 
       }
+      const token = localStorage.getItem('user');
       await axios.post('http://localhost:8080/api/filter-history', filterChangeHistory, {
         headers: {
             'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
         },
       });
       // Post new filters
       for (const filter of newFilterArray) {
+        const token = localStorage.getItem('user');
         await axios.post(`http://localhost:8080/api/equipment/${equipmentId}/filters`, filter, {
           headers: {
             'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
           },
         });
       }

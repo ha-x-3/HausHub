@@ -8,10 +8,6 @@ const NavigationBar = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    // This effect will run whenever the user state changes
-  }, [user]);
-
   const handleLogout = async () => {
     try {
       await logout();
@@ -31,17 +27,17 @@ const NavigationBar = () => {
       <ul className="navbar-nav mr-auto">
         <li className="nav-item">
           <a className="nav-link" href="/filter-change">
-            Replace Filter 
+            Replace Filter
           </a>
         </li>
         <li className="nav-item">
           <a className="nav-link" href="/filter-history">
-            Filter History 
+            Filter History
           </a>
         </li>
         <li className="nav-item">
           <a className="nav-link" href="/notification-history">
-            Notification History 
+            Notification History
           </a>
         </li>
         <li className="nav-item">
