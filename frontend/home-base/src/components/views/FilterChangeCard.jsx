@@ -51,21 +51,6 @@ function FilterChangeCard(){
       }
   };
   
-  const handleGoogleSearch = async (equipmentId) => {
-    try {
-      const token = localStorage.getItem('user');
-      const response = await axios.get(`http://localhost:8080/api/equipment/${equipmentId}/google-search-link`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      window.open(response.data, '_blank');
-    } catch (error) {
-      console.error('Error triggering Google search:', error);
-    }
-  };
-
   const formatFilterSize = (filter) => {
     return `filter size ${filter.length} x ${filter.width} x ${filter.height}`;
   };
@@ -211,9 +196,6 @@ function FilterChangeCard(){
                   <div className='button-container'>
                   <div className="button-wrapper">
                     <Button onClick={() => handleClick(item.id)} className="button">Change Now</Button>
-                  </div>
-                  <div className="button-wrapper">
-                    <Button onClick={() => handleGoogleSearch(item.id)} className="button">Google Search</Button>
                   </div>
                   <div className="button-wrapper">
                     <Button onClick={() => handleSerpApi(formatFilterSize(item.filters[0]))} className="button">API</Button>
