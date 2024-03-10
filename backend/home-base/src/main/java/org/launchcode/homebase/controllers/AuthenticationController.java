@@ -69,10 +69,4 @@ public class AuthenticationController {
         return ResponseEntity.ok(new JwtResponse(token));
     }
 
-//    @PostMapping("/logout")
-//    public ResponseEntity<String> logout(HttpServletRequest request) {
-//        SecurityContextHolder.clearContext();
-//        return ResponseEntity.ok("Logged out successfully");
-//    }
-
 }
