@@ -15,7 +15,11 @@ import { useAuth } from './components/AuthContext';
 
 const Routing = () => {
 
-  const { user } = useAuth();
+  const { user, checkAuthentication } = useAuth();
+
+  useEffect(() => {
+    checkAuthentication();
+  }, [checkAuthentication]);
 
   return (
     <Router>
