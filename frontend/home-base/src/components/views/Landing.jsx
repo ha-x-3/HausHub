@@ -2,7 +2,6 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import HausWrangler from '../../assets/HausWrangler.svg';
 import '../styles/LandingStyles.css';
-import axios from 'axios';
 import { useAuth } from '../AuthContext';
 
 const Landing = () => {
@@ -12,9 +11,9 @@ const Landing = () => {
 
   const handleLogout = async () => {
     try {
-      await axios.get('http://localhost:8080/api/logout');
-      logout();
-      navigate('/login');
+      await logout(() => {
+        navigate('/login');
+      });
     } catch (error) {
       console.error("Error during logout:", error.response?.data?.message || "An unexpected error occurred");
     }

@@ -1,12 +1,9 @@
-
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { Card, CardGroup, ListGroup, Button} from 'react-bootstrap';
 import Alert from 'react-bootstrap/Alert';
 import '../styles/FilterChangeCardStyles.css';
 import axios from 'axios';
-
-
 
 function FilterChangeCard(){
 

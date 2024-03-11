@@ -76,16 +76,21 @@ export default function Signup() {
                     password: password,
                     username: name,
                     verifyPassword: confirmPassword,
-                    role: role 
+                    role 
                 }, {
                     withCredentials: true
+                },
+                {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
                 }
                 );
                 const token = response.data.accessToken;
-            localStorage.setItem('user', token); 
+                localStorage.setItem('user', token); 
                 alert("Form submitted");
                 setFormSubmitted(true);
-                login(response.data);
+                login(email, password);
                 navigate('/filter-change');
             } catch (error) {
                 if (error.response && error.response.status === 409) {

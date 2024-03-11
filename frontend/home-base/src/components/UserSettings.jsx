@@ -4,12 +4,11 @@ import { Table, Modal } from "react-bootstrap";
 import "./styles/EditEquipmentTableStyles.css";
 import { useNavigate } from 'react-router-dom';
 
-
 export const UserSettings = () => {
 
     const [users, setUsers] = useState([]);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [deleteUserId, setDeleteUserId] = useState(null);
+    const [deleteUserId, setDeleteUserId] = useState(null);
 
     const navigate = useNavigate();
 

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Button, Container, Table, Row } from "react-bootstrap";
+import { Container, Table, Row } from "react-bootstrap";
 import Alert from 'react-bootstrap/Alert';
 import axios from "axios";
 
@@ -119,9 +119,7 @@ function FilterChangeHistory() {
                 ))}
             </tbody>
         </Table>
-        
-        </div>
-        
+        </div> 
         );
     };
 

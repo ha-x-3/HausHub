@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import NavigationBar from './components/NavigationBar';
 import Landing from './components/views/Landing';
 import Signup from './components/views/Signup';
@@ -30,12 +30,12 @@ const Routing = () => {
         <Route path="/login" element={<Login />} />
         {user ? (
           <>
-            <Route path="/edit" element={<Edit />} />
-            <Route path="/filter-change" element={<FilterChangeCard />} />
-            <Route path="/editFilter/:id" element={<EditFilter />} />
-            <Route path="/notification-history" element={<NotificationHistory />} />
-            <Route path="/filter-history" element={<FilterChangeHistory />} />
-            <Route path="/edit-user/:id" element={<EditUser />} />
+            <Route path="/edit" element={<Edit user={user} />} />
+            <Route path="/filter-change" element={<FilterChangeCard user={user} />} />
+            <Route path="/editFilter/:id" element={<EditFilter user={user} />} />
+            <Route path="/notification-history" element={<NotificationHistory user={user} />} />
+            <Route path="/filter-history" element={<FilterChangeHistory user={user} />} />
+            <Route path="/edit-user/:id" element={<EditUser user={user} />} />
           </>
         ) : (
           <Route path="/login" element={<Login />} />

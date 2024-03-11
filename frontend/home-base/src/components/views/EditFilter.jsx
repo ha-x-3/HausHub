@@ -127,10 +127,8 @@ const EditFilter = () => {
               }
             );
 
-            //console.log(response.data);
             navigate(-1);
           } catch (error) {
-            // Handle other errors
             console.error('Error:', error);
           }
         }

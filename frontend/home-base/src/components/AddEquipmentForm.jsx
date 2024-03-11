@@ -57,11 +57,16 @@ const AddEquipmentForm = () => {
       try {
         const response = await axios.post(
           "http://localhost:8080/api/equipment",
-          equipment
+          equipment,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+              withCredentials: true,
+            },
+          }
         );
-        //console.log(response.data);
       } catch (error) {
-        // Handle errors
         console.error("Error:", error);
       } finally {
         navigate(0);

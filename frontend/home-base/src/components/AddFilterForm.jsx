@@ -30,9 +30,9 @@ const AddFilterForm = () => {
           {
             headers: {
               Authorization: `Bearer ${token}`,
+              withCredentials: true,
             },
           });
-          //console.log(result.data);
           setEquipment(result.data);
         } catch (error) {
             console.error('Error loading equipment:', error);
@@ -134,13 +134,13 @@ const AddFilterForm = () => {
           {
             headers: {
               Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+              withCredentials: true,
             },
           }
         );
-        //console.log(response.data);
         navigate(0);
       } catch (error) {
-        // Handle errors
         console.error("Error:", error);
       }
     }

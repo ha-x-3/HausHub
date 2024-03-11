@@ -1,17 +1,16 @@
 package org.launchcode.homebase.controllers;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.launchcode.homebase.data.UserRepository;
 import org.launchcode.homebase.models.User;
 import org.launchcode.homebase.models.dto.JwtResponse;
 import org.launchcode.homebase.models.dto.LoginFormDTO;
 import org.launchcode.homebase.models.dto.RegisterFormDTO;
+import org.launchcode.homebase.models.enums.Role;
 import org.launchcode.homebase.service.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;

@@ -11,14 +11,13 @@ export default function Login() {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const userData = { email, password };
-            await login(userData);
-            navigate('/edit');
-          } catch (error) {
-            console.error('Error has occurred', error);
-            alert('An error has occurred while logging in.');
-          } 
-    };
+          await login(email, password);
+          navigate('/edit');
+        } catch (error) {
+          console.error('Error has occurred', error);
+          alert('An error has occurred while logging in.');
+        }
+      };
 
     return (
         <div className='App'>
@@ -41,5 +40,3 @@ export default function Login() {
         </div>
     );
 }
-
-

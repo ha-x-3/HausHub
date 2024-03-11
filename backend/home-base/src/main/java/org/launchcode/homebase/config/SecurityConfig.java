@@ -51,7 +51,7 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173")); // Adjust the allowed origins as needed
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization","*"));
         configuration.setExposedHeaders(Arrays.asList("Authorization", "Access-Control-Allow-Origin", "Access-Control-Allow-Methods", "Access-Control-Allow-Headers"));
         configuration.setAllowCredentials(true);
         configuration.setMaxAge(3600L);
@@ -67,11 +67,11 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                        .ignoringRequestMatchers("/api/register", "/api/login", "/api/logout")
+                        .ignoringRequestMatchers("/api/**")
                 )
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/login", "/api/register", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll() // Use requestMatchers for matching requests
-                        .anyRequest().authenticated() // Require authentication for all other requests
+                        .anyRequest().hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
                 )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Stateless session management

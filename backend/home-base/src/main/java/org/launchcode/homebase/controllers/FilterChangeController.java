@@ -1,17 +1,13 @@
 package org.launchcode.homebase.controllers;
 
-import com.sendgrid.helpers.mail.objects.Email;
 import org.launchcode.homebase.data.FilterChangeRepository;
 import org.launchcode.homebase.service.EmailService;
-import org.launchcode.homebase.models.EmailNotification;
 import org.launchcode.homebase.models.FilterChangeHistory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.List;
 
 @RestController

@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.launchcode.homebase.models.enums.Role;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
@@ -38,12 +39,22 @@ public class User extends AbstractEntity implements UserDetails {
     public User() {
     }
 
+    private void setAuthoritiesBasedOnRole() {
+        if (this.role == Role.ADMIN) {
+            this.authorities = new SimpleGrantedAuthority(Role.ADMIN.toString()).toString();
+        } else {
+            this.authorities = new SimpleGrantedAuthority(Role.USER.toString()).toString();
+        }
+    }
+
     public User(String username, String email, String password, Role role) {
         this.username = username;
         this.email = email;
         this.password = password;
-        this.authorities = role.toString();
+        this.role = role;
+        setAuthoritiesBasedOnRole(); // Call the method to set authorities
     }
+
 
     public String getUsername() {
         return username;
@@ -83,8 +94,7 @@ public class User extends AbstractEntity implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Role userRole = getRole();
-        return Collections.singletonList(userRole);
+        return Collections.singletonList(getRole());
     }
 
     public String getPassword() {

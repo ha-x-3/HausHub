@@ -30,15 +30,16 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const login = async (userData) => {
+  const login = async (email, password) => {
     try {
-      const response = await axios.post('http://localhost:8080/api/login', userData, {
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        withCredentials: true
-      });
-
+      const response = await axios.post(
+        'http://localhost:8080/api/login',
+        { email, password },
+        {
+          headers: { 'Content-Type': 'application/json' },
+          withCredentials: true,
+        }
+      );
       if (response.data.accessToken) {
         const token = response.data.accessToken;
         localStorage.setItem('user', token);

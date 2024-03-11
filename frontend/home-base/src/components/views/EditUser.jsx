@@ -121,10 +121,8 @@ export default function EditUser() {
             Authorization: `Bearer ${token}`,
           },
         });
-        //console.log(response.data);
         navigate('/edit');
       } catch (error) {
-        // Handle other errors
         console.error('Error:', error);
       }
     }

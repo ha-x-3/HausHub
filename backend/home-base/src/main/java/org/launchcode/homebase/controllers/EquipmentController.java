@@ -6,6 +6,7 @@ import org.launchcode.homebase.models.Equipment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,6 +38,7 @@ public class EquipmentController {
         return new ResponseEntity<>(equipment, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @PostMapping("/equipment")
     public ResponseEntity<Equipment> createEquipment(@RequestBody Equipment equipment) {
         Equipment _equipment = equipmentRepository.save(new Equipment(equipment.getName(), equipment.getFilters(), equipment.getFilterLifeDays()));

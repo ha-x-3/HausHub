@@ -4,9 +4,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.launchcode.homebase.models.enums.Role;
-import org.springframework.security.core.GrantedAuthority;
-
-import java.util.Collection;
 
 public class RegisterFormDTO extends LoginFormDTO {
 
