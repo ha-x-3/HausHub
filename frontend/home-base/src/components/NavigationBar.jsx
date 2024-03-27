@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import HausWrangler from '../assets/HausWrangler.svg';
+import HausWranglerText from '../assets/HausWranglerText.png'
 import '../components/styles/NavigationBarStyle.css';
 import { useAuth } from './AuthContext';
 
@@ -24,8 +25,8 @@ const NavigationBar = () => {
   return (
     <nav className="navbar navbar-expand-sm fixed-top">
       <a className="nav-link" href="/">
-        <img src={HausWrangler} width="50" height="50" className="d-inline-block" alt="HausWrangler Logo" />
-        HausWrangler
+        <img src={HausWrangler} width="auto" height="50" className="d-inline-block" alt="HausWrangler Logo" />
+        <img src={HausWranglerText} width="auto" height="35" className="d-inline-block" alt="HausWrangler Text" style={{ paddingTop: '3px' }} />
       </a>
       <ul className="navbar-nav mr-auto">
         <li className="nav-item">
