@@ -9,11 +9,13 @@
     width: 100%;
     border: 6px solid var(--primary);
     box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.466);
+    background-color: rgba(var(--tertiary1rgb), 0.6);
     margin: auto;
     display: flex;
     flex-direction: column;
     justify-content: center;
     overflow-x: scroll;
+    padding-top: 100px;
 }
 
 .filter-form-inputs {
