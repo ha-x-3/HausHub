@@ -2,9 +2,11 @@ package org.launchcode.homebase.service;
 
 import org.launchcode.homebase.data.EquipmentRepository;
 import org.launchcode.homebase.data.FilterRepository;
+import org.launchcode.homebase.data.UserRepository;
 import org.launchcode.homebase.exception.ResourceNotFoundException;
 import org.launchcode.homebase.models.Equipment;
 import org.launchcode.homebase.models.Filter;
+import org.launchcode.homebase.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,9 @@ public class EquipmentService {
 
     @Autowired
     private FilterRepository filterRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     //Build search string given filter id
     public String buildSearchString(int filterId) {
@@ -45,4 +50,19 @@ public class EquipmentService {
         return searchStrings;
     }
 
+    public void assignEquipmentToUser(int userId, int equipmentId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found with id = " + userId));
+        Equipment equipment = equipmentRepository.findById(equipmentId).orElseThrow(() -> new ResourceNotFoundException("Equipment not found with id = " + equipmentId));
+
+        user.getEquipments().add(equipment);
+        equipment.getUsers().add(user);
+
+        userRepository.save(user);
+        equipmentRepository.save(equipment);
+    }
+
+    public List<Equipment> getEquipmentAssignedToUser(int userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found with id = " + userId));
+        return new ArrayList<>(user.getEquipments());
+    }
 }
