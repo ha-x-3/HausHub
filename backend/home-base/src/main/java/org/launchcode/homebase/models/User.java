@@ -39,7 +39,7 @@ public class User extends AbstractEntity implements UserDetails {
     @Column(nullable = false, name = "authorities")
     private String authorities;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "user_equipment",
             joinColumns = @JoinColumn(name = "user_id"),

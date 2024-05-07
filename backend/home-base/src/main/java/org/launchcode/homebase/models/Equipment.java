@@ -1,6 +1,7 @@
 package org.launchcode.homebase.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
@@ -30,7 +31,7 @@ public class Equipment extends AbstractEntity {
     @Positive(message = "Filter life must be a positive number.")
     private int filterLifeDays;
 
-    @ManyToMany(mappedBy = "equipments")
+    @ManyToMany(mappedBy = "equipments",cascade = CascadeType.ALL)
     @JsonIgnore
     private Set<User> users = new HashSet<>();
 
