@@ -1,5 +1,6 @@
 package org.launchcode.homebase.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -11,6 +12,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class User extends AbstractEntity implements UserDetails {
@@ -35,6 +38,14 @@ public class User extends AbstractEntity implements UserDetails {
 
     @Column(nullable = false, name = "authorities")
     private String authorities;
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_equipment",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "equipment_id")
+    )
+    private Set<Equipment> equipments = new HashSet<>();
 
     public User() {
     }
@@ -123,6 +134,14 @@ public class User extends AbstractEntity implements UserDetails {
 
     public void setAuthorities(String authorities) {
         this.authorities = authorities;
+    }
+
+    public Set<Equipment> getEquipments() {
+        return equipments;
+    }
+
+    public void setEquipments(Set<Equipment> equipments) {
+        this.equipments = equipments;
     }
 
 }
