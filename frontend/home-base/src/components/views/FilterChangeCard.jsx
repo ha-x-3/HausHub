@@ -43,14 +43,6 @@ function FilterChangeCard(){
       }
   };
   
-  const handleGoogleSearch = async (equipmentId) => {
-    try {
-        const response = await axios.get(`http://localhost:8080/api/equipment/${equipmentId}/google-search-link`);
-        window.open(response.data, '_blank');
-    } catch (error) {
-        console.error('Error triggering Google search:', error);
-    }
-  };
 
   const formatFilterSize = (filter) => {
     return `filter size ${filter.length} x ${filter.width} x ${filter.height}`;
@@ -60,7 +52,12 @@ function FilterChangeCard(){
     try {
       const response = await axios.get(`http://localhost:8080/search?filterSize=${formatFilterSize}`, { timeout: 5000 });
       console.log('SerpApi response:', response.data);
-      window.open(response.data, '_blank');
+      const url = response.data.pagination.next;
+      if(url) {
+        window.open(url, '_blank');
+      } else {
+        console.error('No URL found in the response');
+      }
     } catch (error) {
       console.error('Error calling Serpapi:', error.message);
     }
@@ -183,9 +180,6 @@ function FilterChangeCard(){
                     <Button onClick={() => handleClick(item.id)} className="button">Change Now</Button>
                   </div>
                   <div className="button-wrapper">
-                    <Button onClick={() => handleGoogleSearch(item.id)} className="button">Google Search</Button>
-                  </div>
-                  <div className="button-wrapper">
                     <Button onClick={() => handleSerpApi(formatFilterSize(item.filters[0]))} className="button">API</Button>
                   </div>
                 </div>
@@ -206,3 +200,10 @@ function FilterChangeCard(){
 }
 
 export default FilterChangeCard
+
+
+// topResults=[
+//   {link=https://www.homedepot.com/p/HDX-20-in-x-20-in-x-1-in-Elite-Allergen-Pleated-Air-Filter-FPR-12-MERV-13-61201-012020/320205845?source=shoppingads&locale=en-US&srsltid=AfmBOopPVxivo34i6tB_ANegVJKdgfiLATIpQws06EoLBCWM87EcdCKKEVg, title=20 in. x 20 in. x 1 in. Elite Allergen Pleated Air Filter FPR 12, MERV}, 
+//   {link=https://www.amazon.com/Aerostar-20x20x1-MERV-Pleated-Filter/dp/B01CSWPVME?source=ps-sl-shoppingads-lpcontext&ref_=fplfs&psc=1&smid=ATVPDKIKX0DER, title=Aerostar 20x20x1 MERV 8 Pleated Air Filter AC Furnace Air Filter 6 Pack}, 
+//   {link=https://www.walmart.com/ip/HDX-20-in-x-20-in-x-1-in-Standard-Pleated-Furnace-Air-Filter-FPR-5-12-Pack/760507916?wmlspartner=wlpa&selectedSellerId=101026817, title=Hdx 20 in. x 20 in. x 1 in. Standard Pleated Furnace Air Filter FPR 5, 12 Pack ...}
+// ]
