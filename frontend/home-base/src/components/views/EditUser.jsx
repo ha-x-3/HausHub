@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import axiosInstance from '../Axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import '../styles/AddFormStyles.css';
 
@@ -19,13 +19,7 @@ export default function EditUser() {
 
   const loadUser = async () => {
     try {
-      const token = localStorage.getItem('user');
-      const result = await axios.get(`http://localhost:8080/api/users/${id}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const result = await axiosInstance.get(`/users/${id}`);
       const userData = result.data;
   
       // Ensure that password and confirmPassword fields are not null or undefined
@@ -114,13 +108,7 @@ export default function EditUser() {
           payload.password = user.password;
           payload.confirmPassword = user.confirmPassword;
         }
-        const token = localStorage.getItem('user');
-        const response = await axios.put(`http://localhost:8080/api/users/${id}`, payload,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axiosInstance.put(`/users/${id}`, payload);
         navigate('/edit');
       } catch (error) {
         console.error('Error:', error);
