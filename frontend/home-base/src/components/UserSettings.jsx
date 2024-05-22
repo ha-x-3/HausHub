@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import axios from 'axios'
+import axiosInstance from './Axios'
 import { Table, Modal } from "react-bootstrap";
 import "./styles/EditEquipmentTableStyles.css";
 import { useNavigate } from 'react-router-dom';
@@ -18,17 +18,11 @@ export const UserSettings = () => {
 
     const loadUsers = async () => {
         try {
-            const token = localStorage.getItem('user');
-            const response = await axios.get('http://localhost:8080/api/users',
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            });
-            setUsers(response.data);
-        } catch (error) {
-            console.error('Error loading users:', error);
-        }
+			const response = await axiosInstance.get('/users');
+			setUsers(response.data);
+		} catch (error) {
+			console.error('Error loading users:', error);
+		}
     };
 
     const handleEdit = (userId) => {
@@ -37,15 +31,9 @@ export const UserSettings = () => {
 
     const handleDelete = async (userId) => {
         try {
-            const token = localStorage.getItem('user');
-            await axios.delete(`http://localhost:8080/api/users/${userId}`,
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            });
-            loadUsers();
-            setShowDeleteModal(false)
+            await axiosInstance.delete(`/users/${userId}`);
+			loadUsers();
+			setShowDeleteModal(false);
         } catch (error) {
             console.error('Error deleting user:', error);
         }
