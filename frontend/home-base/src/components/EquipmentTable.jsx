@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { Table, Modal } from "react-bootstrap";
+import axiosInstance from './Axios';
 
 const EquipmentTable = () => {
   const [equipment, setEquipment] = useState([]);
@@ -14,7 +14,7 @@ const EquipmentTable = () => {
   const loadEquipment = async () => {
     try {
       const token = localStorage.getItem('user');
-      const result = await axios.get("http://localhost:8080/api/equipment",
+      const result = await axiosInstance.get("/equipment",
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -29,7 +29,7 @@ const EquipmentTable = () => {
   const handleDelete = async (equipmentId) => {
     try {
       const token = localStorage.getItem('user');
-      await axios.delete(`http://localhost:8080/api/equipment/${equipmentId}`,
+      await axiosInstance.delete(`/equipment/${equipmentId}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
