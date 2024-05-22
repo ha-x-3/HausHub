@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import '../styles/SignupStyles.css';
 import { useNavigate } from "react-router-dom";
-import axios from 'axios';
+import axiosInstance from '../Axios';
 import { useAuth } from '../AuthContext';
 
 export default function Signup() {
@@ -69,23 +69,16 @@ export default function Signup() {
       
         if (isValid) {
             try {
-                const response = await axios.post(
-                "http://localhost:8080/api/register",
-                {
-                    email: email,
-                    password: password,
-                    username: name,
-                    verifyPassword: confirmPassword,
-                    role 
-                }, {
-                    withCredentials: true
-                },
-                {
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                }
-                );
+                const response = await axiosInstance.post(
+					'/register',
+					{
+						email: email,
+						password: password,
+						username: name,
+						verifyPassword: confirmPassword,
+						role,
+					},
+				);
                 const token = response.data.accessToken;
                 localStorage.setItem('user', token); 
                 alert("Form submitted");
