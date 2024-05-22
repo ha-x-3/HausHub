@@ -13,13 +13,8 @@ const EquipmentTable = () => {
 
   const loadEquipment = async () => {
     try {
-      const token = localStorage.getItem('user');
       const result = await axiosInstance.get("/equipment",
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      );
       setEquipment(result.data);
     } catch (error) {
       console.error("Error loading equipment:", error);
@@ -28,13 +23,8 @@ const EquipmentTable = () => {
 
   const handleDelete = async (equipmentId) => {
     try {
-      const token = localStorage.getItem('user');
       await axiosInstance.delete(`/equipment/${equipmentId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      );
       loadEquipment();
       setShowDeleteModal(false);
     } catch (error) {
