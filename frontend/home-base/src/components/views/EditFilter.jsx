@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import axiosInstance from '../Axios';
 import { useNavigate, useParams } from 'react-router-dom';
 
 const EditFilter = () => {
@@ -21,13 +21,7 @@ const EditFilter = () => {
 
     const loadFilter = async () => {
         try {
-            const token = localStorage.getItem('user');
-            const result = await axios.get(`http://localhost:8080/api/filters/${id}`,
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            });
+            const result = await axiosInstance.get(`/filters/${id}`);
             setFilter(result.data);
         } catch (error) {
             console.error('Error loading filter:', error);
@@ -109,9 +103,8 @@ const EditFilter = () => {
             const { id, location, length, width, height, dateOfLastChange } = filter;
       
             const formattedDate = new Date(dateOfLastChange).toISOString().split('T')[0];
-            const token = localStorage.getItem('user');
-            const response = await axios.put(
-              `http://localhost:8080/api/filters/${id}`,
+            const response = await axiosInstance.put(
+              `/filters/${id}`,
               {
                 id,
                 location,
@@ -119,14 +112,8 @@ const EditFilter = () => {
                 width,
                 height,
                 dateOfLastChange: formattedDate,
-              },
-              {
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                },
               }
             );
-
             navigate(-1);
           } catch (error) {
             console.error('Error:', error);
