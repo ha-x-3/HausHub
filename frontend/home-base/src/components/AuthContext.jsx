@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import axios from 'axios';
+import axiosInstance from './Axios';
 
 const AuthContext = createContext();
 
@@ -31,46 +31,37 @@ export const AuthProvider = ({ children }) => {
   };
 
   const login = async (email, password) => {
-    try {
-      const response = await axios.post(
-        'http://localhost:8080/api/login',
-        { email, password },
-        {
-          headers: { 'Content-Type': 'application/json' },
-          withCredentials: true,
-        }
-      );
-      if (response.data.accessToken) {
-        const token = response.data.accessToken;
-        localStorage.setItem('user', token);
-        checkAuthentication();
-      } else {
-        console.error('Invalid response format');
-      }
-    } catch (error) {
-      console.error('Error logging in:', error);
-      throw error;
-    }
+		try {
+			const response = await axiosInstance.post(
+				'/login',
+				{ email, password }
+			);
+			if (response.data.accessToken) {
+				const token = response.data.accessToken;
+				localStorage.setItem('user', token);
+				checkAuthentication();
+			} else {
+				console.error('Invalid response format');
+			}
+		} catch (error) {
+			console.error('Error logging in:', error);
+			throw error;
+		}
   };
 
   const logout = async (callback) => {
-    try {
-      const token = localStorage.getItem('user');
-      await axios.post(
-        'http://localhost:8080/api/logout',
-        null,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      localStorage.removeItem('user');
-      setUser(null);
-      callback();
-    } catch (error) {
-      console.error('Error logging out:', error);
-    }
+		try {
+			const token = localStorage.getItem('user');
+			await axiosInstance.post(
+				'/logout',
+				null
+			);
+			localStorage.removeItem('user');
+			setUser(null);
+			callback();
+		} catch (error) {
+			console.error('Error logging out:', error);
+		}
   };
 
   const decodeJWT = (token) => {

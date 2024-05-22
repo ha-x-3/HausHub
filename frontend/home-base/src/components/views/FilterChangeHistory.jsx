@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react"
 import { Container, Table, Row } from "react-bootstrap";
 import Alert from 'react-bootstrap/Alert';
-import axios from "axios";
-
+import axiosInstance from "../Axios";
 
 function FilterChangeHistory() {
 
@@ -17,14 +16,7 @@ function FilterChangeHistory() {
 
       const loadHistory = async () => {
         try {
-            const token = localStorage.getItem('user');
-            const response = await axios.get("http://localhost:8080/api/filter-history",
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            });
-            console.log(response.data);
+            const response = await axiosInstance.get("/filter-history");
             setFilterChangeHistory(response.data);
             setLoading(false);
             } catch (error) {
@@ -43,13 +35,7 @@ function FilterChangeHistory() {
 
     const handleClick = async () => {
         try {
-            const token = localStorage.getItem('user');
-            const response = await axios.post("http://localhost:8080/api/filter-history/email",
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            });
+            const response = await axiosInstance.post("/filter-history/email");
             console.log(response.data);
         } catch (error) {
             console.error("Failed to send emails: ", error);
