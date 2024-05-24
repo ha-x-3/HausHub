@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { useAuth } from '../AuthContext';
 
 export default function Login() {
@@ -12,29 +11,13 @@ export default function Login() {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const response = await axios.post('http://localhost:8080/api/login', {
-                email: email,
-                password: password,
-            }, {
-                auth: {
-                    username: email,
-                    password: password,
-                },
-            }, {withCredentials: true});
-
-            if (response.status === 200) {
-                login(response.data);
-                navigate('/edit');
-            } else {
-                alert('Email or Password do not match');
-            }
-            
+          await login(email, password);
+          navigate('/edit');
         } catch (error) {
-            console.error('Error has occured', error.response.data.message);
-            alert('An error has occurred while logging in.')
+          console.error('Error has occurred', error);
+          alert('An error has occurred while logging in.');
         }
-        
-    };
+      };
 
     return (
         <div className='App'>
@@ -42,13 +25,13 @@ export default function Login() {
                 <div className="formInfo">
                     <label>
                         Email:
-                        <input type="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)}/>
+                        <input type="email" name="email" value={email} autoComplete="email" onChange={(e) => setEmail(e.target.value)}/>
                     </label>
                 </div>
                 <div className="formInfo">
                     <label>
                         Password:
-                        <input type="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                        <input type="password" name="password" value={password} autoComplete="password" onChange={(e) => setPassword(e.target.value)} />
                     </label>
                 </div>
                     <input className="button" type="submit" value="Submit" />
@@ -57,5 +40,3 @@ export default function Login() {
         </div>
     );
 }
-
-

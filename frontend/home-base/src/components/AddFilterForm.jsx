@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import axiosInstance from "./Axios";
 import { useNavigate } from "react-router-dom";
 import './styles/AddFormStyles.css';
 
@@ -24,14 +24,13 @@ const AddFilterForm = () => {
   }, []);
 
   const loadEquipment = async () => {
-        try {
-            const result = await axios.get("http://localhost:8080/api/equipment");
-            //console.log(result.data);
-            setEquipment(result.data);
-        } catch (error) {
-            console.error('Error loading equipment:', error);
-        }
-    };
+		try {
+			const response = await axiosInstance.get('/equipment');
+			setEquipment(response.data);
+		} catch (error) {
+			console.error('Error loading equipment:', error);
+		}
+  };
 
   const [errors, setErrors] = useState({
     location: "",
@@ -118,20 +117,20 @@ const AddFilterForm = () => {
   const navigate = useNavigate();
 
   const saveFilter = async (event) => {
-    event.preventDefault();
-    if (validateForm()) {
-      try {
-        const response = await axios.post(
-          `http://localhost:8080/api/equipment/${selectedEquipmentId}/filters`,
-          filter
-        );
-        //console.log(response.data);
-        navigate(0);
-      } catch (error) {
-        // Handle errors
-        console.error("Error:", error);
-      }
-    }
+		event.preventDefault();
+
+		if (validateForm()) {
+			try {
+				const response = await axiosInstance.post(
+					`/equipment/${selectedEquipmentId}/filters`,
+					filter
+				);
+			} catch (error) {
+				console.error('Error:', error);
+			} finally {
+				navigate(0);
+			}
+		}
   };
 
   return (

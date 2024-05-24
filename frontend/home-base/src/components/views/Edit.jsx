@@ -11,19 +11,14 @@ export default function Edit() {
   const renderComponent = () => {
     switch (selectedOption) {
       case 'userSettings':
-        // Render User Settings component
         return <UserSettings />;
       case 'editEquipment':
-        // Render Equipment Settings component
         return <EditEquipmentTable />;
       case 'addEquipment':
-        // Render Add Equipment Form component
         return <AddEquipmentForm />;
       case 'addFilter':
-        // Render Add Filter Form component
         return <AddFilterForm />;
       default:
-        // Render a default component - Edit Equipment Table
         return <EditEquipmentTable />;
     }
   };

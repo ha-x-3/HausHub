@@ -1,12 +1,9 @@
-
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { Card, CardGroup, ListGroup, Button} from 'react-bootstrap';
 import Alert from 'react-bootstrap/Alert';
 import '../styles/FilterChangeCardStyles.css';
-import axios from 'axios';
-
-
+import axiosInstance from '../Axios';
 
 function FilterChangeCard(){
 
@@ -21,8 +18,7 @@ function FilterChangeCard(){
   
     const loadEquipment = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/equipment");
-        console.log(response.data);
+        const response = await axiosInstance.get("/equipment");
         setEquipmentData(response.data);
         setLoading(false);
       } catch (error) {
@@ -33,31 +29,21 @@ function FilterChangeCard(){
 
     const handleUpdate = async (equipmentId, updatedData) => {
       try {
-        await axios.put(`http://localhost:8080/api/equipment/${equipmentId}`, updatedData, {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
+        await axiosInstance.put(`/equipment/${equipmentId}`, updatedData);
       } catch (error) {
         console.error('Error updating equipment:', error);
       }
   };
   
-
   const formatFilterSize = (filter) => {
     return `filter size ${filter.length} x ${filter.width} x ${filter.height}`;
   };
 
   const handleSerpApi = async (formatFilterSize) => {
     try {
-      const response = await axios.get(`http://localhost:8080/search?filterSize=${formatFilterSize}`, { timeout: 5000 });
-      console.log('SerpApi response:', response.data);
-      const url = response.data.pagination.next;
-      if(url) {
-        window.open(url, '_blank');
-      } else {
-        console.error('No URL found in the response');
-      }
+      const response = await axiosInstance.get(`/search?filterSize=${formatFilterSize}`);
+      //console.log('SerpApi response:', response.data);
+      window.open(response.data, '_blank');
     } catch (error) {
       console.error('Error calling Serpapi:', error.message);
     }
@@ -84,7 +70,7 @@ function FilterChangeCard(){
       // Step 1: Delete all existing filters
       for (const filter of selectedEquipment.filters) {
         filterLocations.push(filter.location);
-        await axios.delete(`http://localhost:8080/api/filters/${filter.id}`);
+        await axiosInstance.delete(`/filters/${filter.id}`);
       }
       
       // Step 2: Create new filters with updated dimensions and dateOfLastChange
@@ -113,18 +99,11 @@ function FilterChangeCard(){
         equipmentName: selectedEquipment.name,
         changedTimeStamp: new Date().toISOString().split("T")[0], 
       }
-      await axios.post('http://localhost:8080/api/filter-history', filterChangeHistory, {
-        headers: {
-            'Content-Type': 'application/json',
-        },
-      });
+      await axiosInstance.post('/filter-history', filterChangeHistory);
+
       // Post new filters
       for (const filter of newFilterArray) {
-        await axios.post(`http://localhost:8080/api/equipment/${equipmentId}/filters`, filter, {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
+        await axiosInstance.post(`/equipment/${equipmentId}/filters`, filter);
       }
     
       // Update equipment data
@@ -199,11 +178,5 @@ function FilterChangeCard(){
     );
 }
 
-export default FilterChangeCard
+export default FilterChangeCard;
 
-
-// topResults=[
-//   {link=https://www.homedepot.com/p/HDX-20-in-x-20-in-x-1-in-Elite-Allergen-Pleated-Air-Filter-FPR-12-MERV-13-61201-012020/320205845?source=shoppingads&locale=en-US&srsltid=AfmBOopPVxivo34i6tB_ANegVJKdgfiLATIpQws06EoLBCWM87EcdCKKEVg, title=20 in. x 20 in. x 1 in. Elite Allergen Pleated Air Filter FPR 12, MERV}, 
-//   {link=https://www.amazon.com/Aerostar-20x20x1-MERV-Pleated-Filter/dp/B01CSWPVME?source=ps-sl-shoppingads-lpcontext&ref_=fplfs&psc=1&smid=ATVPDKIKX0DER, title=Aerostar 20x20x1 MERV 8 Pleated Air Filter AC Furnace Air Filter 6 Pack}, 
-//   {link=https://www.walmart.com/ip/HDX-20-in-x-20-in-x-1-in-Standard-Pleated-Furnace-Air-Filter-FPR-5-12-Pack/760507916?wmlspartner=wlpa&selectedSellerId=101026817, title=Hdx 20 in. x 20 in. x 1 in. Standard Pleated Furnace Air Filter FPR 5, 12 Pack ...}
-// ]

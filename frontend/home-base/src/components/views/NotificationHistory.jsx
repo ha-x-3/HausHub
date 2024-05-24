@@ -1,17 +1,26 @@
 import React, { useEffect, useState } from 'react'
-import axios from 'axios';
+import axiosInstance from '../Axios';
 import { Table } from 'react-bootstrap';
 import '../styles/NotificationHistoryStyles.css';
 
-export const NotificationHistory = () => {
+const NotificationHistory = () => {
 
     const [emailNotifications, setEmailNotifications] = useState([]);
 
     useEffect(() => {
-        axios.get("http://localhost:8080/api/email-notifications/history")
-            .then(response => setEmailNotifications(response.data))
-            .catch(error => console.error('Error fetching email notification data:', error));
-    }, []);
+		fetchEmailNotifications();
+	}, []);
+
+	const fetchEmailNotifications = async () => {
+		try {
+			const response = await axiosInstance.get(
+				'/email-notifications/history'
+			);
+			setEmailNotifications(response.data);
+		} catch (error) {
+			console.error('Error fetching email notification data:', error);
+		}
+	};
 
     return (
         <div className='table-pane'>
@@ -41,4 +50,6 @@ export const NotificationHistory = () => {
             </Table>
         </div>
     )
-}
+};
+
+export default NotificationHistory;

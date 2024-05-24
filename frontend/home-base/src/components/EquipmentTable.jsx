@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { Table, Modal } from "react-bootstrap";
+import axiosInstance from './Axios';
 
 const EquipmentTable = () => {
   const [equipment, setEquipment] = useState([]);
@@ -13,7 +13,8 @@ const EquipmentTable = () => {
 
   const loadEquipment = async () => {
     try {
-      const result = await axios.get("http://localhost:8080/api/equipment");
+      const result = await axiosInstance.get("/equipment",
+      );
       setEquipment(result.data);
     } catch (error) {
       console.error("Error loading equipment:", error);
@@ -22,7 +23,8 @@ const EquipmentTable = () => {
 
   const handleDelete = async (equipmentId) => {
     try {
-      await axios.delete(`http://localhost:8080/api/equipment/${equipmentId}`);
+      await axiosInstance.delete(`/equipment/${equipmentId}`,
+      );
       loadEquipment();
       setShowDeleteModal(false);
     } catch (error) {

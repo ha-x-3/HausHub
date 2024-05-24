@@ -8,12 +8,13 @@ import org.launchcode.homebase.service.EquipmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:5173/")
+@CrossOrigin(origins = {"http://localhost:5173/", "http://localhost:8081"})
 @RequestMapping("/api")
 public class FilterController {
 
@@ -44,6 +45,7 @@ public class FilterController {
         return new ResponseEntity<>(filter, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @PostMapping("/equipment/{equipmentId}/filters")
     public ResponseEntity<Filter> createFilter(@PathVariable(value = "equipmentId") int equipmentId, @RequestBody Filter newFilter) {
         Filter filter = equipmentRepository.findById(equipmentId).map(equipment -> {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import axiosInstance from "./Axios";
 import { Table, Button, Modal } from "react-bootstrap";
 import "../components/styles/EditEquipmentTableStyles.css";
 import { Link } from "react-router-dom";
@@ -15,8 +15,8 @@ export default function EditEquipmentTable() {
 
   const loadEquipment = async () => {
     try {
-      const result = await axios.get("http://localhost:8080/api/equipment");
-      setEquipment(result.data);
+      const response = await axiosInstance.get('/equipment');
+		  setEquipment(response.data);
     } catch (error) {
       console.error("Error loading equipment:", error);
     }
@@ -24,7 +24,7 @@ export default function EditEquipmentTable() {
 
   const handleDelete = async (filterId) => {
     try {
-      await axios.delete(`http://localhost:8080/api/filters/${filterId}`);
+      await axiosInstance.delete(`/filters/${filterId}`);
       loadEquipment();
       setShowDeleteModal(false);
     } catch (error) {
@@ -40,7 +40,6 @@ export default function EditEquipmentTable() {
   const closeDeleteModal = () => {
     setShowDeleteModal(false);
   }
-
 
   return (
     <div className="equipment-table-pane">

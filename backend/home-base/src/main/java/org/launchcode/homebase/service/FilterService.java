@@ -1,7 +1,6 @@
 package org.launchcode.homebase.service;
 
 import org.launchcode.homebase.data.FilterRepository;
-import org.launchcode.homebase.data.UserRepository;
 import org.launchcode.homebase.models.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -15,11 +15,12 @@ import org.springframework.stereotype.Service;
 import com.sendgrid.helpers.mail.Mail;
 import com.sendgrid.helpers.mail.objects.Email;
 import org.springframework.scheduling.annotation.Scheduled;
-
 import java.io.IOException;
 import com.sendgrid.*;
-
 import java.util.*;
+import java.util.Date;
+
+
 
 @Service
 public class EmailService {

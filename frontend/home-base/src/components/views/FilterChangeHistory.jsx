@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react"
-import { Button, Container, Table, Row } from "react-bootstrap";
+import { Container, Table, Row } from "react-bootstrap";
 import Alert from 'react-bootstrap/Alert';
-import axios from "axios";
-
+import axiosInstance from "../Axios";
 
 function FilterChangeHistory() {
 
@@ -17,14 +16,13 @@ function FilterChangeHistory() {
 
       const loadHistory = async () => {
         try {
-          const response = await axios.get("http://localhost:8080/api/filter-history");
-          console.log(response.data);
-          setFilterChangeHistory(response.data);
-          setLoading(false);
-        } catch (error) {
-          setError(error);
-          setLoading(false);
-        }
+            const response = await axiosInstance.get("/filter-history");
+            setFilterChangeHistory(response.data);
+            setLoading(false);
+            } catch (error) {
+            setError(error);
+            setLoading(false);
+            }
       };  
 
     if(loading) {
@@ -37,7 +35,7 @@ function FilterChangeHistory() {
 
     const handleClick = async () => {
         try {
-            const response = await axios.post("http://localhost:8080/api/filter-history/email");
+            const response = await axiosInstance.post("/filter-history/email");
             console.log(response.data);
         } catch (error) {
             console.error("Failed to send emails: ", error);
@@ -107,9 +105,7 @@ function FilterChangeHistory() {
                 ))}
             </tbody>
         </Table>
-        
-        </div>
-        
+        </div> 
         );
     };
 
