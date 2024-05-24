@@ -1,23 +1,24 @@
 package org.launchcode.homebase.models;
 
+import java.util.Map;
+import org.json.JSONObject;
+
 public class EmailRequest {
 
     private int equipmentId;
-
     private int filterId;
-
     private String to;
-
     private String subject;
-
     private String message;
+    private JSONObject templateData;
 
-    public EmailRequest(int equipmentId, int filterId, String to, String subject, String message) {
+    public EmailRequest(int equipmentId, int filterId, String to, String subject, String message, JSONObject templateData) {
         this.equipmentId = equipmentId;
         this.filterId = filterId;
         this.to = to;
         this.subject = subject;
         this.message = message;
+        this.templateData = templateData;
     }
 
     public int getEquipmentId() {
@@ -58,5 +59,13 @@ public class EmailRequest {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public JSONObject getTemplateData() {
+        return templateData;
+    }
+
+    public void setTemplateData(JSONObject templateData) {
+        this.templateData = templateData;
     }
 }

@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.launchcode.homebase.models.dto.EquipmentUserDTO;
-
 import java.util.List;
 
 @RestController
@@ -22,8 +21,10 @@ public class EquipmentController {
     @Autowired
     private EquipmentRepository equipmentRepository;
 
+
     @Autowired
     private UserRepository userRepository;
+
 
     @GetMapping("/equipment")
     public ResponseEntity<List<Equipment>> getAllEquipment() {

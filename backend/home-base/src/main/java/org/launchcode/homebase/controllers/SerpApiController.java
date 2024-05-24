@@ -1,5 +1,6 @@
 package org.launchcode.homebase.controllers;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import org.launchcode.homebase.service.SerpApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +18,8 @@ public class SerpApiController {
     }
 
     @GetMapping("/search")
-    public String searchForFilter(@RequestParam String filterSize) {
+    public JsonNode searchForFilter(@RequestParam String filterSize) {
         return serpApiService.getGoogleShoppingResults(filterSize);
     }
+
 }
