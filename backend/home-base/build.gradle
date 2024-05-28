@@ -30,9 +30,11 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 	implementation 'com.sendgrid:sendgrid-java:4.10.2'
 	implementation 'com.github.serpapi:google-search-results-java:2.0.2'
-  implementation 'com.fasterxml.jackson.core:jackson-databind:2.16.1'
-	implementation 'org.json:json:20220320'
-  compileOnly 'org.projectlombok:lombok:1.18.30'
+  	implementation 'com.fasterxml.jackson.core:jackson-databind:2.16.1'
+	implementation 'org.json:json:20231013'
+	implementation platform('software.amazon.awssdk:bom:2.21.1')
+	implementation 'software.amazon.awssdk:ssm'
+	compileOnly 'org.projectlombok:lombok:1.18.30'
 
 }
 
