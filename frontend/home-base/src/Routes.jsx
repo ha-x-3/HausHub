@@ -22,26 +22,56 @@ const Routing = () => {
   }, [checkAuthentication]);
 
   return (
-    <Router>
-      <NavigationBar />
-      <Routes>
-        <Route path="/" element={<Landing />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/login" element={<Login />} />
-        {user ? (
-          <>
-            <Route path="/edit" element={<Edit user={user} />} />
-            <Route path="/filter-change" element={<FilterChangeCard user={user} />} />
-            <Route path="/editFilter/:id" element={<EditFilter user={user} />} />
-            <Route path="/notification-history" element={<NotificationHistory user={user} />} />
-            <Route path="/filter-history" element={<FilterChangeHistory user={user} />} />
-            <Route path="/edit-user/:id" element={<EditUser user={user} />} />
-          </>
-        ) : (
-          <Route path="/login" element={<Login />} />
-        )}
-      </Routes>
-    </Router>
+		<Router basename='/HausWrangler'>
+			<NavigationBar />
+			<Routes>
+				<Route
+					path='/'
+					element={<Landing />}
+				/>
+				<Route
+					path='/signup'
+					element={<Signup />}
+				/>
+				<Route
+					path='/login'
+					element={<Login />}
+				/>
+				{user ? (
+					<>
+						<Route
+							path='/edit'
+							element={<Edit user={user} />}
+						/>
+						<Route
+							path='/filter-change'
+							element={<FilterChangeCard user={user} />}
+						/>
+						<Route
+							path='/editFilter/:id'
+							element={<EditFilter user={user} />}
+						/>
+						<Route
+							path='/notification-history'
+							element={<NotificationHistory user={user} />}
+						/>
+						<Route
+							path='/filter-history'
+							element={<FilterChangeHistory user={user} />}
+						/>
+						<Route
+							path='/edit-user/:id'
+							element={<EditUser user={user} />}
+						/>
+					</>
+				) : (
+					<Route
+						path='/login'
+						element={<Login />}
+					/>
+				)}
+			</Routes>
+		</Router>
   );
 };
 
