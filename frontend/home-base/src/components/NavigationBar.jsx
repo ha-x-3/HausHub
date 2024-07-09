@@ -90,7 +90,7 @@ const NavigationBar = () => {
 					<li className='nav-item'>
 						<Link
 							className='button'
-							to='/HausWrangler/login'
+							to='/login'
 						>
 							Login
 						</Link>
