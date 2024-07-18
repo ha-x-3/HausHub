@@ -11,14 +11,17 @@ public class EmailRequest {
     private String subject;
     private String message;
     private JSONObject templateData;
+    private Map imageUrls;
 
-    public EmailRequest(int equipmentId, int filterId, String to, String subject, String message, JSONObject templateData) {
+    public EmailRequest(int equipmentId, int filterId, String to, String subject, String message, JSONObject templateData, Map<String, String> imageUrls) {
         this.equipmentId = equipmentId;
         this.filterId = filterId;
         this.to = to;
         this.subject = subject;
         this.message = message;
         this.templateData = templateData;
+        this.imageUrls = imageUrls;
+
     }
 
     public int getEquipmentId() {
@@ -43,6 +46,14 @@ public class EmailRequest {
 
     public void setTo(String to) {
         this.to = to;
+    }
+
+    public Map getImageUrls() {
+        return imageUrls;
+    }
+
+    public void setImageUrls(Map imageUrls) {
+        this.imageUrls = imageUrls;
     }
 
     public String getSubject() {

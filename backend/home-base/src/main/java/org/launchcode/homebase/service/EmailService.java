@@ -71,15 +71,35 @@ public class EmailService {
             personalization.addSubstitution("{{location}}", templateData.getString("location"));
             personalization.addSubstitution("{{size}}", templateData.getString("size"));
 
-            // Construct the topResults string
+
+
+//             Construct the topResults string
+//            StringBuilder topResultsBuilder = new StringBuilder();
+//            JSONArray topResultsArray = templateData.getJSONArray("topResults");
+//            for (int i = 0; i < topResultsArray.length(); i++) {
+//                JSONObject result = topResultsArray.getJSONObject(i);
+//                String title = result.getString("title");
+//                String link = result.getString("link");
+//
+//                topResultsBuilder.append("<a href=\"").append(link).append("\">").append(title).append("</a><br>");
+//            }
             StringBuilder topResultsBuilder = new StringBuilder();
             JSONArray topResultsArray = templateData.getJSONArray("topResults");
             for (int i = 0; i < topResultsArray.length(); i++) {
                 JSONObject result = topResultsArray.getJSONObject(i);
                 String title = result.getString("title");
                 String link = result.getString("link");
-                topResultsBuilder.append("<a href=\"").append(link).append("\">").append(title).append("</a><br>");
+                String imageUrl = result.getString("thumbnail"); // Retrieve the image URL if available
+
+                topResultsBuilder.append("<div style='margin-bottom: 20px;'>")
+                        .append("<a href=\"").append(link).append("\">")
+                        .append("<img src='").append(imageUrl).append("' alt='Thumbnail' style='width:100px;height:auto;display:block;margin:auto;'>")
+                        .append("<span style='display:block;text-align:center;margin-top:10px;'>").append(title).append("</span></a></div>");
+//                topResultsBuilder.append("<a href=\"").append(link).append("\">")
+//                        .append("<img src='").append(imageUrl).append("' alt='Thumbnail' style='width:100px;height:auto;'>") // Include the image
+//                        .append("<span>").append(title).append("</span></a><br>");
             }
+
             personalization.addSubstitution("{{topResults}}", topResultsBuilder.toString());
 
             mail.addPersonalization(personalization);
@@ -150,6 +170,7 @@ public class EmailService {
         String searchQuery = "filter size" + filter.getHeight() + "x" + filter.getWidth() + "x" + filter.getLength(); // Use equipment name as search query
         JsonNode serpApiResults = serpApiService.getGoogleShoppingResults(searchQuery);
 
+
         // Create the JSON object
         JSONObject jsonData = new JSONObject();
         jsonData.put("user", user.getUsername());
@@ -158,6 +179,8 @@ public class EmailService {
         jsonData.put("size", filter.getHeight() + "x" + filter.getWidth() + "x" + filter.getLength());
 
         // Add topResults data
+
+        Map<String, String> imageUrls = new HashMap<>();
         JSONArray topResultsArray = new JSONArray();
         if (serpApiResults != null && serpApiResults.has("shopping_results")) {
             JsonNode shoppingResults = serpApiResults.get("shopping_results");
@@ -167,13 +190,21 @@ public class EmailService {
                 if (count > 3) {
                     break; // Include only the top 3 results
                 }
+                String title = result.get("title").asText();
+                String link = result.get("link").asText();
+                String imageUrl = result.get("thumbnail").asText();
+
                 JSONObject resultObj = new JSONObject();
                 resultObj.put("title", result.get("title").asText());
                 resultObj.put("link", result.get("link").asText());
+                resultObj.put("thumbnail", result.get("thumbnail").asText());
                 topResultsArray.put(resultObj);
                 count++;
             }
         }
+
+
+
         jsonData.put("topResults", topResultsArray);
         System.out.println("Template Data: " + jsonData);
 
@@ -184,7 +215,8 @@ public class EmailService {
                 user.getEmail(),
                 "Filter Change Reminder",
                 "Your filter for " + filter.getEquipment().getName() + " is due for change.",
-                jsonData
+                jsonData,
+                imageUrls
         );
 
         // Send email
