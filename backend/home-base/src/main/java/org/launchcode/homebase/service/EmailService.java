@@ -179,24 +179,7 @@ public class EmailService {
         jsonData.put("size", filter.getHeight() + "x" + filter.getWidth() + "x" + filter.getLength());
 
         // Add topResults data
-//        JSONArray topResultsArray = new JSONArray();
-//        if (serpApiResults != null && serpApiResults.has("shopping_results")) {
-//            JsonNode shoppingResults = serpApiResults.get("shopping_results");
-//            //System.out.println("Shopping Results: " + shoppingResults);
-//            int count = 1;
-//            for (JsonNode result : shoppingResults) {
-//                if (count > 3) {
-//                    break; // Include only the top 3 results
-//                }
-//                JSONObject resultObj = new JSONObject();
-//                resultObj.put("title", result.get("title").asText());
-//                resultObj.put("link", result.get("link").asText());
-//                topResultsArray.put(resultObj);
-//                count++;
-//            }
-//        }
 
-        //        JSONArray topResultsArray = new JSONArray();
         Map<String, String> imageUrls = new HashMap<>();
         JSONArray topResultsArray = new JSONArray();
         if (serpApiResults != null && serpApiResults.has("shopping_results")) {
