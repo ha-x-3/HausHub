@@ -19,21 +19,28 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'mysql:mysql-connector-java:8.0.33'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'io.jsonwebtoken:jjwt:0.12.5'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
-	implementation 'org.springframework.security:spring-security-crypto:5.5.8'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+	implementation 'io.jsonwebtoken:jjwt:0.12.5'
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
 	implementation 'com.sendgrid:sendgrid-java:4.10.2'
 	implementation 'com.github.serpapi:google-search-results-java:2.0.2'
-  implementation 'com.fasterxml.jackson.core:jackson-databind:2.16.1'
-	implementation 'org.json:json:20220320'
-  compileOnly 'org.projectlombok:lombok:1.18.30'
+	implementation 'com.fasterxml.jackson.core:jackson-databind:2.16.1'
+	implementation 'org.json:json:20231013'
 
+	implementation(platform('io.awspring.cloud:spring-cloud-aws-dependencies:3.2.0-M1'))
+	implementation 'io.awspring.cloud:spring-cloud-aws-starter-parameter-store'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.springframework.cloud:spring-cloud-starter'
+
+	implementation group: 'com.mysql', name: 'mysql-connector-j', version: '9.0.0'
+
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	compileOnly 'org.projectlombok:lombok:1.18.30'
 }
 
 
