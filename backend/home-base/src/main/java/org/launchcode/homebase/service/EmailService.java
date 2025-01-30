@@ -23,8 +23,6 @@ import com.sendgrid.*;
 import java.util.*;
 import java.util.Date;
 
-
-
 @Service
 public class EmailService {
     @Autowired
@@ -74,18 +72,6 @@ public class EmailService {
             personalization.addSubstitution("{{location}}", templateData.getString("location"));
             personalization.addSubstitution("{{size}}", templateData.getString("size"));
 
-
-
-//             Construct the topResults string
-//            StringBuilder topResultsBuilder = new StringBuilder();
-//            JSONArray topResultsArray = templateData.getJSONArray("topResults");
-//            for (int i = 0; i < topResultsArray.length(); i++) {
-//                JSONObject result = topResultsArray.getJSONObject(i);
-//                String title = result.getString("title");
-//                String link = result.getString("link");
-//
-//                topResultsBuilder.append("<a href=\"").append(link).append("\">").append(title).append("</a><br>");
-//            }
             StringBuilder topResultsBuilder = new StringBuilder();
             JSONArray topResultsArray = templateData.getJSONArray("topResults");
             for (int i = 0; i < topResultsArray.length(); i++) {
@@ -98,9 +84,6 @@ public class EmailService {
                         .append("<a href=\"").append(link).append("\">")
                         .append("<img src='").append(imageUrl).append("' alt='Thumbnail' style='width:100px;height:auto;display:block;margin:auto;'>")
                         .append("<span style='display:block;text-align:center;margin-top:10px;'>").append(title).append("</span></a></div>");
-//                topResultsBuilder.append("<a href=\"").append(link).append("\">")
-//                        .append("<img src='").append(imageUrl).append("' alt='Thumbnail' style='width:100px;height:auto;'>") // Include the image
-//                        .append("<span>").append(title).append("</span></a><br>");
             }
 
             personalization.addSubstitution("{{topResults}}", topResultsBuilder.toString());
@@ -123,6 +106,7 @@ public class EmailService {
             throw new Exception("Failed to send email: " + ex.getMessage());
         }
     }
+
     private void logEmailNotification(int equipmentId, int filterId, String to, String subject, String message) {
 
         Equipment equipment = equipmentRepository.findById(equipmentId)
@@ -141,6 +125,7 @@ public class EmailService {
         emailNotificationRepository.save(emailNotification);
 
     }
+
     @Scheduled(cron = "0 0 5 * * ?") // Run every day at 5 am
     public void sendEmailsForDueFilters() {
         try {
@@ -171,7 +156,6 @@ public class EmailService {
         String searchQuery = "filter size" + filter.getHeight() + "x" + filter.getWidth() + "x" + filter.getLength(); // Use equipment name as search query
         JsonNode serpApiResults = serpApiService.getGoogleShoppingResults(searchQuery);
 
-
         // Create the JSON object
         JSONObject jsonData = new JSONObject();
         jsonData.put("user", user.getUsername());
@@ -180,31 +164,26 @@ public class EmailService {
         jsonData.put("size", filter.getHeight() + "x" + filter.getWidth() + "x" + filter.getLength());
 
         // Add topResults data
-
-        Map<String, String> imageUrls = new HashMap<>();
         JSONArray topResultsArray = new JSONArray();
         if (serpApiResults != null && serpApiResults.has("shopping_results")) {
             JsonNode shoppingResults = serpApiResults.get("shopping_results");
-            //System.out.println("Shopping Results: " + shoppingResults);
             int count = 1;
             for (JsonNode result : shoppingResults) {
                 if (count > 3) {
                     break; // Include only the top 3 results
                 }
-                String title = result.get("title").asText();
-                String link = result.get("link").asText();
-                String imageUrl = result.get("thumbnail").asText();
+                String title = result.has("title") ? result.get("title").asText() : "No title";
+                String link = result.has("link") ? result.get("link").asText() : "No link";
+                String imageUrl = result.has("thumbnail") ? result.get("thumbnail").asText() : "No image";
 
                 JSONObject resultObj = new JSONObject();
-                resultObj.put("title", result.get("title").asText());
-                resultObj.put("link", result.get("link").asText());
-                resultObj.put("thumbnail", result.get("thumbnail").asText());
+                resultObj.put("title", title);
+                resultObj.put("link", link);
+                resultObj.put("thumbnail", imageUrl);
                 topResultsArray.put(resultObj);
                 count++;
             }
         }
-
-
 
         jsonData.put("topResults", topResultsArray);
         System.out.println("Template Data: " + jsonData);
@@ -217,7 +196,7 @@ public class EmailService {
                 "Filter Change Reminder",
                 "Your filter for " + filter.getEquipment().getName() + " is due for change.",
                 jsonData,
-                imageUrls
+                new HashMap<>()
         );
 
         // Send email
