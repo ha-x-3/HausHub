@@ -11,6 +11,9 @@ import org.launchcode.homebase.data.UserRepository;
 import org.launchcode.homebase.exception.ResourceNotFoundException;
 import org.launchcode.homebase.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import com.sendgrid.helpers.mail.Mail;
 import com.sendgrid.helpers.mail.objects.Email;
@@ -51,7 +54,7 @@ public class EmailService {
     public void sendEmail(EmailRequest emailRequest) throws Exception {
         try {
             Mail mail = new Mail();
-            Email from = new Email("kenjigw@gmail.com");
+            Email from = new Email("britbot3000@gmail.com");
             mail.setFrom(from);
             Email to = new Email(emailRequest.getTo());
 
@@ -141,16 +144,14 @@ public class EmailService {
     @Scheduled(cron = "0 0 5 * * ?") // Run every day at 5 am
     public void sendEmailsForDueFilters() {
         try {
-
             List<Filter> filtersDueForChange = filterService.getFiltersToChangeInNext7Days();
 
-            User user = userRepository.findById(1).orElse(null);
-            System.out.println("Number of filters due for change: " + filtersDueForChange.size());
-            System.out.println("User exists: " + (user != null));
-            if(user == null) {
-                System.out.println("User does not exist");
-            }
-            if(user != null) {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication != null && authentication.isAuthenticated()) {
+                String username = ((UserDetails) authentication.getPrincipal()).getUsername();
+                User user = userRepository.findByUsername(username);
+
+                System.out.println("Number of filters due for change: " + filtersDueForChange.size());
                 for (Filter filter : filtersDueForChange) {
                     sendEmailForFilterChange(filter, user);
                 }
