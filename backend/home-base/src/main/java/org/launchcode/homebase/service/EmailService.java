@@ -77,11 +77,11 @@ public class EmailService {
             for (int i = 0; i < topResultsArray.length(); i++) {
                 JSONObject result = topResultsArray.getJSONObject(i);
                 String title = result.getString("title");
-                String link = result.getString("link");
+                String product_link = result.getString("product_link");
                 String imageUrl = result.getString("thumbnail"); // Retrieve the image URL if available
 
                 topResultsBuilder.append("<div style='margin-bottom: 20px;'>")
-                        .append("<a href=\"").append(link).append("\">")
+                        .append("<a href=\"").append(product_link).append("\">")
                         .append("<img src='").append(imageUrl).append("' alt='Thumbnail' style='width:100px;height:auto;display:block;margin:auto;'>")
                         .append("<span style='display:block;text-align:center;margin-top:10px;'>").append(title).append("</span></a></div>");
             }
@@ -173,12 +173,12 @@ public class EmailService {
                     break; // Include only the top 3 results
                 }
                 String title = result.has("title") ? result.get("title").asText() : "No title";
-                String link = result.has("link") ? result.get("link").asText() : "No link";
+                String product_link = result.has("product_link") ? result.get("product_link").asText() : "No link";
                 String imageUrl = result.has("thumbnail") ? result.get("thumbnail").asText() : "No image";
 
                 JSONObject resultObj = new JSONObject();
                 resultObj.put("title", title);
-                resultObj.put("link", link);
+                resultObj.put("product_link", product_link);
                 resultObj.put("thumbnail", imageUrl);
                 topResultsArray.put(resultObj);
                 count++;
